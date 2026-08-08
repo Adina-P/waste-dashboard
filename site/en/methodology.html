@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Methodology — Israel Waste Index</title>
+<link rel="stylesheet" href="../style.css?v=86e30ec3">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <h1><a href="index.html">Israel Waste Index</a></h1>
+    <nav class="site-nav"><a href="index.html" class="">Home</a>
+<a href="ranking.html" class="">Rankings</a>
+<a href="national.html" class="">National Overview</a>
+<a href="wall-of-silence.html" class="">Wall of Silence</a>
+<a href="glossary.html" class="">Glossary</a>
+<a href="methodology.html" class="active">Methodology</a></nav>
+    <div class="header-controls">
+      <a href="../methodology.html" class="lang-toggle">עברית</a>
+      <button id="theme-toggle" class="theme-toggle" type="button"><svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg><svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg></button>
+    </div>
+  </div>
+</header>
+<main class="wrap">
+
+<h2>Sources &amp; Methodology</h2>
+<p class="lede">Every number on this site links to its official source. Last updated: 2026-08-08.</p>
+
+<h3>Data sources</h3>
+<dl class="methodology-source">
+  <dt>Waste by local authority (<bdi dir="ltr">2014&ndash;2024</bdi>)</dt>
+  <dd>Israel's Central Bureau of Statistics (CBS), "Household and commercial waste collected, by treatment method and local authority." Published: November 4, 2025.</dd>
+  <dd><a href="https://www.cbs.gov.il/he/publications/Pages/2019/פסולת-שנאספה-ברשויות-המקומיות-2014-2017.aspx" target="_blank" rel="noopener">cbs.gov.il</a></dd>
+
+  <dt>Population by locality</dt>
+  <dd>CBS, 2022 Population and Housing Census, "Population and households by locality."</dd>
+  <dd><a href="https://data.gov.il" target="_blank" rel="noopener">data.gov.il</a> (dataset 3bd97fde-6cc3-456d-ab63-1caad16b2b6a)</dd>
+
+  <dt>End-of-pipeline solutions for municipal waste in Israel &mdash; background and questions for discussion</dt>
+  <dd>Knesset Research and Information Center, January 2026. Source for the economic/policy background on the landfill levy.</dd>
+  <dd><a href="https://fs.knesset.gov.il/25/Committees/25_cs_mmm_11061789.pdf" target="_blank" rel="noopener">fs.knesset.gov.il (PDF)</a></dd>
+
+  <dt>Household waste in Israel</dt>
+  <dd>Knesset Research and Information Center, June 2008. Source of the historical reporting-rate figure (see "Reporting rate" below).</dd>
+  <dd><a href="https://fs.knesset.gov.il/globaldocs/MMM/034c6b58-e9f7-e411-80c8-00155d010977/2_034c6b58-e9f7-e411-80c8-00155d010977_11_6689.pdf" target="_blank" rel="noopener">fs.knesset.gov.il (PDF)</a></dd>
+</dl>
+
+<h3>How each number is calculated</h3>
+<ul>
+  <li><strong>% recycled</strong> — the "percentage of total waste" transferred to recycling and recovery, calculated and published directly by CBS for each authority.</li>
+  <li><strong>% landfilled</strong> — tons sent to landfill divided by total waste, as reported in the CBS table.</li>
+  <li><strong>Kg per capita per day</strong> — calculated and published directly by CBS.</li>
+  <li><strong>Population</strong> — for cities and local councils: taken directly from the CBS population file (2022 census) by authority name. For regional councils: summed from the population of all member localities (cross-referenced with the 2019 socioeconomic clusters file).</li>
+</ul>
+
+<h3>Authority reporting rate</h3>
+<p class="lede">A "non-reporting authority" on this site = an authority for which CBS did not publish a numeric figure in the municipal waste and recycling survey for that year. In practice, 226&ndash;253 out of 255&ndash;257 authorities report some waste data in every year between 2014 and 2024 (18 out of 257 did not report in 2024) &mdash; a far higher reporting rate than what commonly circulates in public discussion.</p>
+<div class="caveat">You may have come across a figure of "only about 120 authorities report," which occasionally circulates in public discussion. It originates from a <strong>June 2008</strong> Knesset Research and Information Center report (<a href="https://fs.knesset.gov.il/globaldocs/MMM/034c6b58-e9f7-e411-80c8-00155d010977/2_034c6b58-e9f7-e411-80c8-00155d010977_11_6689.pdf" target="_blank" rel="noopener">"Household Waste in Israel"</a>) &mdash; a report about compliance with a different regulatory reporting requirement to the Ministry of Environmental Protection (not the CBS survey this site is based on), describing a situation from roughly 18 years ago. Both figures are correct in their own context, but they are not directly comparable. Full detail in <code>data/CONFLICTS.md</code> in the source repository.</div>
+
+<h3>Known limitations</h3>
+<div class="caveat"><strong>National total.</strong> Summing the data of all individual authorities comes out about 7&ndash;8% lower than CBS's own official total line, because CBS's national total includes an estimate for authorities that don't report separately. That's why the "National Overview" page uses CBS's official total line, not a sum of the authority-level data.</div>
+<div class="caveat"><strong>District.</strong> We haven't yet found a data source mapping authority&rarr;district. This field is currently missing from the site (no filtering by district in v1).</div>
+<div class="caveat"><strong>Socioeconomic cluster.</strong> The only data source we found covers localities within regional councils only (995 localities, 54 councils) &mdash; with no coverage for cities and local councils, which make up most of the authorities shown on this site. So this field isn't shown at all in v1, to avoid presenting a partial and misleading figure.</div>
+<div class="caveat"><strong>Two authorities without population data</strong>: Sdot Dan and Sha'ar Shomron &mdash; not found in any of the population sources checked.</div>
+<div class="caveat"><strong>Recycling vs. other recovery</strong>: The CBS table combines "recycling" and "other recovery" (such as energy recovery) into a single figure. These cannot be separated with the current source.</div>
+
+<h3>Data updates</h3>
+<p>Last updated: 2026-08-08. The data does not update automatically &mdash; a future update will require re-running the processing pipeline once CBS publishes new data.</p>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    Data from Israel's Central Bureau of Statistics and data.gov.il ·
+    <a href="../methodology.html">Sources & Methodology</a>
+  </div>
+</footer>
+<script src="../theme.js?v=86e30ec3"></script>
+<script data-goatcounter="https://adinap.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

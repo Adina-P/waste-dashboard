@@ -33,11 +33,13 @@ NAV_ITEMS_HE = [
     ("methodology.html", "מתודולוגיה"),
 ]
 
-# English (Phase 1): only pages that actually have an English translation.
 NAV_ITEMS_EN = [
     ("index.html", "Home"),
     ("ranking.html", "Rankings"),
     ("national.html", "National Overview"),
+    ("wall-of-silence.html", "Wall of Silence"),
+    ("glossary.html", "Glossary"),
+    ("methodology.html", "Methodology"),
 ]
 
 STRINGS = {
@@ -118,6 +120,10 @@ STRINGS = {
         "policy_caveat": 'אין בידינו נתוני עלות מדויקים (ש"ח לטונה) עבור הטמנה מול מיחזור ברמת רשות או ברמה ארצית — הפירוט לעיל הוא תיאור מדיניות איכותני, לא נתון מספרי. מקור: <a href="https://fs.knesset.gov.il/25/Committees/25_cs_mmm_11061789.pdf" target="_blank" rel="noopener">דוח מרכז המחקר והמידע של הכנסת, ינואר 2026</a> (PDF).',
         "further_reading_title": "קריאה נוספת",
         "further_reading_lede": "כתבות רקע מהתקשורת הישראלית על משבר הפסולת.",
+        "wos_title": "חומת השתיקה",
+        "wos_lede": '{reported} מתוך {total} רשויות מקומיות לא דיווחו נתוני פסולת ומיחזור ללמ"ס עבור {year}. אי-דיווח הוא ממצא בפני עצמו.',
+        "wos_never": "מעולם לא",
+        "th_wos_last_report": "דיווח אחרון",
     },
     "en": {
         "site_title": "Israel Waste Index",
@@ -196,6 +202,10 @@ STRINGS = {
         "policy_caveat": 'We do not have exact cost data (NIS per ton) for landfilling vs. recycling at the authority or national level — the description above is a qualitative policy summary, not a numeric figure. Source: <a href="https://fs.knesset.gov.il/25/Committees/25_cs_mmm_11061789.pdf" target="_blank" rel="noopener">Knesset Research and Information Center report, January 2026</a> (PDF).',
         "further_reading_title": "Further Reading",
         "further_reading_lede": "Background coverage from the Israeli press on the waste crisis (Hebrew).",
+        "wos_title": "Wall of Silence",
+        "wos_lede": "{reported} out of {total} local authorities did not report waste and recycling data to the CBS for {year}. Non-reporting is a finding in itself.",
+        "wos_never": "Never",
+        "th_wos_last_report": "Last Report",
     },
 }
 
@@ -337,7 +347,6 @@ def build_home_page(data: dict, lang: str = "he") -> str:
         1 for a in data["authorities"] if not a["years"].get(latest_year, {}).get("reported")
     )
     root_prefix = "" if lang == "he" else "../"
-    hebrew_tag = "" if lang == "he" else f'<span class="hebrew-only-tag">{s["hebrew_only"]}</span>'
     body = f"""
 <div class="hero hero-photo" style="background-image: url('{root_prefix}images/hero.jpg?v={ASSET_VERSION}')">
 <div class="hero-inner">
@@ -353,28 +362,23 @@ def build_home_page(data: dict, lang: str = "he") -> str:
 </div>
 <div class="feature-grid">
   <a class="feature-card" href="ranking.html">
-    <div class="icon">{ICON_RANKING}</div>
-    <h3>{s['card_ranking_title']}</h3>
+    <div class="feature-card-head">{ICON_RANKING}<h3>{s['card_ranking_title']}</h3></div>
     <p>{s['card_ranking_desc']}</p>
   </a>
   <a class="feature-card" href="national.html">
-    <div class="icon">{ICON_NATIONAL}</div>
-    <h3>{s['card_national_title']}</h3>
+    <div class="feature-card-head">{ICON_NATIONAL}<h3>{s['card_national_title']}</h3></div>
     <p>{s['card_national_desc']}</p>
   </a>
   <a class="feature-card" href="{root_prefix}wall-of-silence.html">
-    <div class="icon">{ICON_SILENCE}</div>
-    <h3>{s['card_silence_title']}{hebrew_tag}</h3>
+    <div class="feature-card-head">{ICON_SILENCE}<h3>{s['card_silence_title']}</h3></div>
     <p>{s['card_silence_desc']}</p>
   </a>
   <a class="feature-card" href="{root_prefix}glossary.html">
-    <div class="icon">{ICON_GLOSSARY}</div>
-    <h3>{s['card_glossary_title']}{hebrew_tag}</h3>
+    <div class="feature-card-head">{ICON_GLOSSARY}<h3>{s['card_glossary_title']}</h3></div>
     <p>{s['card_glossary_desc']}</p>
   </a>
   <a class="feature-card" href="{root_prefix}methodology.html">
-    <div class="icon">{ICON_METHOD}</div>
-    <h3>{s['card_methodology_title']}{hebrew_tag}</h3>
+    <div class="feature-card-head">{ICON_METHOD}<h3>{s['card_methodology_title']}</h3></div>
     <p>{s['card_methodology_desc']}</p>
   </a>
 </div>
@@ -558,43 +562,104 @@ def build_national_page(data: dict, lang: str = "he") -> str:
     return shell(title, "national.html", body, root_prefix=root_prefix, nav_prefix="", lang=lang, lang_toggle_href=lang_toggle_href)
 
 
-def build_wall_of_silence_page(data: dict) -> str:
+def build_wall_of_silence_page(data: dict, lang: str = "he") -> str:
+    s = STRINGS[lang]
     years = data["years"]
     latest_year = str(years[-1])
+    root_prefix = "" if lang == "he" else "../"
+    name_key = "name_he" if lang == "he" else "name_en"
+    authority_href_prefix = "authority/" if lang == "he" else "../authority/"
     non_reporting = [
         a for a in data["authorities"] if not a["years"].get(latest_year, {}).get("reported")
     ]
-    non_reporting.sort(key=lambda a: a["name_he"])
+    non_reporting.sort(key=lambda a: a[name_key])
     rows = []
     for a in non_reporting:
         ly = latest_reported_year(a, years)
         pop_sort = a["population"] if a["population"] is not None else -1
         year_sort = int(ly) if ly else 0
+        name = a[name_key]
         rows.append(
-            f'<tr><td class="name" data-sort="{a["name_he"]}"><a href="authority/{a["slug"]}.html">{a["name_he"]}</a></td>'
+            f'<tr><td class="name" data-sort="{name}"><a href="{authority_href_prefix}{a["slug"]}.html">{name}</a></td>'
             f'<td data-sort="{pop_sort}">{fmt_num(a["population"])}</td>'
-            f'<td data-sort="{year_sort}">{ly or "מעולם לא"}</td></tr>'
+            f'<td data-sort="{year_sort}">{ly or s["wos_never"]}</td></tr>'
         )
     rows_html = "\n".join(rows)
+    lede = s["wos_lede"].format(reported=len(non_reporting), total=len(data["authorities"]), year=latest_year)
     body = f"""
-<h2>חומת השתיקה</h2>
-<p class="lede">{len(non_reporting)} מתוך {len(data['authorities'])} רשויות מקומיות לא דיווחו נתוני פסולת ומיחזור ללמ"ס עבור {latest_year}. אי-דיווח הוא ממצא בפני עצמו.</p>
+<h2>{s['wos_title']}</h2>
+<p class="lede">{lede}</p>
 <div class="card">
 <div class="table-scroll">
 <table class="ranked" id="wos-table">
-<thead><tr><th data-key="name" class="sorted asc">רשות מקומית</th><th data-key="population">אוכלוסייה</th><th data-key="year">דיווח אחרון</th></tr></thead>
+<thead><tr><th data-key="name" class="sorted asc">{s['th_authority']}</th><th data-key="population">{s['th_population']}</th><th data-key="year">{s['th_wos_last_report']}</th></tr></thead>
 <tbody>{rows_html}</tbody>
 </table>
 </div>
 </div>
-<script src="app.js?v={ASSET_VERSION}"></script>
+<script src="{root_prefix}app.js?v={ASSET_VERSION}"></script>
 <script>document.addEventListener('DOMContentLoaded', () => makeSortableTable(document.getElementById('wos-table')));</script>
 """
-    return shell("חומת השתיקה — מדד הפסולת", "wall-of-silence.html", body)
+    title = "חומת השתיקה — מדד הפסולת" if lang == "he" else "Wall of Silence — Israel Waste Index"
+    lang_toggle_href = "en/wall-of-silence.html" if lang == "he" else "../wall-of-silence.html"
+    return shell(title, "wall-of-silence.html", body, root_prefix=root_prefix, nav_prefix="", lang=lang, lang_toggle_href=lang_toggle_href)
 
 
-def build_glossary_page(data: dict) -> str:
-    body = """
+def build_glossary_page(data: dict, lang: str = "he") -> str:
+    root_prefix = "" if lang == "he" else "../"
+    if lang == "en":
+        body = f"""
+<h2>Glossary</h2>
+<p class="lede">How waste is treated in Israel, what each method means for the environment and cost, and how it compares internationally.</p>
+
+<h3>Waste treatment methods</h3>
+<dl class="methodology-source">
+  <dt>Source separation</dt>
+  <dd>Sorting waste into separate streams (organic, dry recyclables, residual) at home or business, before collection. Under Israel's reform: brown bins for organic waste, orange bins for dry recyclables, green bins for residual waste. Source separation is a precondition for high-quality compost and effective recycling &mdash; waste that arrives already mixed is far harder to sort.</dd>
+
+  <dt>Transfer station</dt>
+  <dd>An intermediate facility where collected waste is consolidated, and sometimes partially sorted, before continuing on to recycling, recovery, or landfill.</dd>
+
+  <dt>Recycling</dt>
+  <dd>Reprocessing materials &mdash; paper, cardboard, plastic, glass, metal &mdash; into raw material for reuse. Saves natural resources and new mining/manufacturing.</dd>
+
+  <dt>Composting / organic waste treatment</dt>
+  <dd>Processing food scraps and yard waste into compost. Returns organic material to the soil instead of burying it &mdash; which prevents the methane emissions produced when organic matter decomposes without oxygen in a landfill. Per this site's data, it's the single largest component of everything transferred to recycling and recovery in Israel.</dd>
+
+  <dt>Energy recovery (thermal recovery)</dt>
+  <dd>Burning waste (or fuel derived from it) to generate energy. In Israel this currently happens mainly through a partnership between the Hiriya recycling park and the Nesher cement plant, which uses fuel derived from waste. Ranked in the hierarchy below recycling but above landfill.</dd>
+
+  <dt>Landfill</dt>
+  <dd>Burying waste in the ground. Currently the cheapest method in Israel, but the most problematic environmentally: buried organic waste emits methane &mdash; a greenhouse gas far more potent than carbon dioxide &mdash; and there's a risk of groundwater contamination from leachate. It also occupies land that can't be used for anything else.</dd>
+
+  <dt>Landfill levy</dt>
+  <dd>A fee the state charges on every ton of waste sent to landfill, introduced in 2007 to make landfilling more expensive and encourage alternatives. Even so, according to the Ministry of Environmental Protection, landfilling in Israel is still significantly cheaper than in European countries that have banned it &mdash; see more in the <a href="{root_prefix}national.html">National Overview</a>.</dd>
+</dl>
+
+<h3>The waste treatment hierarchy</h3>
+<p class="lede">The EU (and also the policy of Israel's Ministry of Environmental Protection) ranks waste treatment methods by environmental preference, from best to worst:</p>
+<ol>
+  <li><strong>Prevention and reduction</strong> &mdash; not creating the waste in the first place</li>
+  <li><strong>Preparation for reuse and recycling</strong> &mdash; turning waste into raw material</li>
+  <li><strong>Recovery</strong> &mdash; including energy recovery</li>
+  <li><strong>Landfill</strong> &mdash; last resort</li>
+</ol>
+<p class="lede">Source: Knesset Research and Information Center, <a href="https://fs.knesset.gov.il/25/Committees/25_cs_mmm_11061789.pdf" target="_blank" rel="noopener">January 2026</a> (PDF), based on EU publications.</p>
+
+<h3>Cost to society</h3>
+<p class="lede">Beyond the direct financial cost of collection and disposal, every treatment method carries an indirect environmental and social cost: methane emissions and air-quality harm from landfilling, risk of soil and groundwater contamination, transportation burden from hauling waste long distances, and the loss of land that could have been used for other purposes.</p>
+<div class="caveat">As noted in the <a href="{root_prefix}national.html">National Overview</a>: we do not have exact cost data (NIS per ton) at the authority or national level for a direct landfill-vs-recycling comparison. What is known: Israel's landfill tariff, including the levy, is significantly lower than in European countries that have banned landfilling &mdash; which makes the more environmentally friendly alternatives comparatively more expensive.</div>
+
+<h3>How this compares internationally</h3>
+<p class="lede">Israel landfills about 76% of its municipal waste (2024) &mdash; significantly higher than the average among developed countries. Israel ranks 20th out of 22 OECD countries that report recycling data (25.3% in 2023), compared to an OECD average of about 57%. Countries like Germany, Sweden, and Austria aim for (and sometimes reach) near-zero landfill rates, mainly through a combination of extensive source separation, energy recovery, and recycling.</p>
+<p class="lede">For further reading on the international comparison:</p>
+<ul>
+  <li><a href="https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Municipal_waste_statistics" target="_blank" rel="noopener">Eurostat &mdash; Municipal waste statistics</a></li>
+  <li><a href="https://data.oecd.org/waste/municipal-waste.htm" target="_blank" rel="noopener">OECD &mdash; Municipal waste data</a></li>
+</ul>
+"""
+    else:
+        body = f"""
 <h2>מילון מונחים</h2>
 <p class="lede">איך פסולת מטופלת בישראל, מה כל שיטה אומרת לסביבה ולעלות, ואיך זה נראה במדינות אחרות.</p>
 
@@ -619,7 +684,7 @@ def build_glossary_page(data: dict) -> str:
   <dd>קבורת פסולת בקרקע. השיטה הזולה ביותר כיום בישראל, אך הבעייתית ביותר סביבתית: פסולת אורגנית שנקברת פולטת מתאן &mdash; גז חממה חזק בהרבה מפחמן דו-חמצני &mdash; ויש סיכון לזיהום מי תהום מתשטיפים. גם תופסת שטח קרקע שלא ניתן להשתמש בו לדברים אחרים.</dd>
 
   <dt>היטל הטמנה</dt>
-  <dd>תשלום שגובה המדינה על כל טונת פסולת שמוטמנת, שהונהג ב-2007 כדי להפוך הטמנה ליקרה יותר ולעודד חלופות. עדיין, לפי המשרד להגנת הסביבה, ההטמנה בישראל זולה משמעותית מאשר במדינות אירופה שאסרו עליה &mdash; ראו הרחבה ב<a href="national.html">תמונת מצב ארצית</a>.</dd>
+  <dd>תשלום שגובה המדינה על כל טונת פסולת שמוטמנת, שהונהג ב-2007 כדי להפוך הטמנה ליקרה יותר ולעודד חלופות. עדיין, לפי המשרד להגנת הסביבה, ההטמנה בישראל זולה משמעותית מאשר במדינות אירופה שאסרו עליה &mdash; ראו הרחבה ב<a href="{root_prefix}national.html">תמונת מצב ארצית</a>.</dd>
 </dl>
 
 <h3>היררכיית הטיפול בפסולת</h3>
@@ -634,7 +699,7 @@ def build_glossary_page(data: dict) -> str:
 
 <h3>עלות לחברה</h3>
 <p class="lede">מעבר לעלות הכספית הישירה של איסוף ופינוי, לכל שיטת טיפול יש עלות סביבתית וחברתית עקיפה: פליטות מתאן ופגיעה באיכות האוויר מהטמנה, סיכון לזיהום קרקע ומי תהום, עומס תחבורתי משינוע פסולת למרחקים, ואובדן קרקע שאפשר היה לייעד לשימושים אחרים.</p>
-<div class="caveat">כפי שמצוין ב<a href="national.html">תמונת מצב ארצית</a>: אין בידינו נתוני עלות מדויקים (ש"ח לטונה) ברמת רשות או ברמה ארצית להשוואה ישירה בין הטמנה למיחזור. מה שכן ידוע: תעריף ההטמנה בישראל, כולל ההיטל, נמוך משמעותית מהתעריף במדינות אירופיות שאסרו הטמנה &mdash; מה שמייקר יחסית את החלופות הידידותיות יותר לסביבה.</div>
+<div class="caveat">כפי שמצוין ב<a href="{root_prefix}national.html">תמונת מצב ארצית</a>: אין בידינו נתוני עלות מדויקים (ש"ח לטונה) ברמת רשות או ברמה ארצית להשוואה ישירה בין הטמנה למיחזור. מה שכן ידוע: תעריף ההטמנה בישראל, כולל ההיטל, נמוך משמעותית מהתעריף במדינות אירופיות שאסרו הטמנה &mdash; מה שמייקר יחסית את החלופות הידידותיות יותר לסביבה.</div>
 
 <h3>איך זה נראה בעולם</h3>
 <p class="lede">ישראל מטמינה כ-76% מהפסולת העירונית שלה (2024) &mdash; שיעור גבוה משמעותית מהממוצע במדינות המפותחות. ישראל מדורגת 20 מתוך 22 מדינות ה-OECD שמדווחות נתוני מיחזור (25.3% ב-2023), לעומת ממוצע OECD של כ-57%. מדינות כמו גרמניה, שוודיה ואוסטריה שואפות (ולעיתים מגיעות) לשיעורי הטמנה קרובים לאפס, בעיקר באמצעות שילוב של הפרדה במקור נרחבת, השבת אנרגיה ומיחזור.</p>
@@ -644,12 +709,62 @@ def build_glossary_page(data: dict) -> str:
   <li><a href="https://data.oecd.org/waste/municipal-waste.htm" target="_blank" rel="noopener">OECD &mdash; Municipal waste data</a></li>
 </ul>
 """
-    return shell("מילון מונחים — מדד הפסולת", "glossary.html", body)
+    title = "מילון מונחים — מדד הפסולת" if lang == "he" else "Glossary — Israel Waste Index"
+    lang_toggle_href = "en/glossary.html" if lang == "he" else "../glossary.html"
+    return shell(title, "glossary.html", body, root_prefix=root_prefix, nav_prefix="", lang=lang, lang_toggle_href=lang_toggle_href)
 
 
-def build_methodology_page(data: dict) -> str:
+def build_methodology_page(data: dict, lang: str = "he") -> str:
     generated_at = data["generated_at"][:10]
-    body = f"""
+    root_prefix = "" if lang == "he" else "../"
+    if lang == "en":
+        body = f"""
+<h2>Sources &amp; Methodology</h2>
+<p class="lede">Every number on this site links to its official source. Last updated: {generated_at}.</p>
+
+<h3>Data sources</h3>
+<dl class="methodology-source">
+  <dt>Waste by local authority (<bdi dir="ltr">2014&ndash;2024</bdi>)</dt>
+  <dd>Israel's Central Bureau of Statistics (CBS), "Household and commercial waste collected, by treatment method and local authority." Published: November 4, 2025.</dd>
+  <dd><a href="https://www.cbs.gov.il/he/publications/Pages/2019/פסולת-שנאספה-ברשויות-המקומיות-2014-2017.aspx" target="_blank" rel="noopener">cbs.gov.il</a></dd>
+
+  <dt>Population by locality</dt>
+  <dd>CBS, 2022 Population and Housing Census, "Population and households by locality."</dd>
+  <dd><a href="https://data.gov.il" target="_blank" rel="noopener">data.gov.il</a> (dataset 3bd97fde-6cc3-456d-ab63-1caad16b2b6a)</dd>
+
+  <dt>End-of-pipeline solutions for municipal waste in Israel &mdash; background and questions for discussion</dt>
+  <dd>Knesset Research and Information Center, January 2026. Source for the economic/policy background on the landfill levy.</dd>
+  <dd><a href="https://fs.knesset.gov.il/25/Committees/25_cs_mmm_11061789.pdf" target="_blank" rel="noopener">fs.knesset.gov.il (PDF)</a></dd>
+
+  <dt>Household waste in Israel</dt>
+  <dd>Knesset Research and Information Center, June 2008. Source of the historical reporting-rate figure (see "Reporting rate" below).</dd>
+  <dd><a href="https://fs.knesset.gov.il/globaldocs/MMM/034c6b58-e9f7-e411-80c8-00155d010977/2_034c6b58-e9f7-e411-80c8-00155d010977_11_6689.pdf" target="_blank" rel="noopener">fs.knesset.gov.il (PDF)</a></dd>
+</dl>
+
+<h3>How each number is calculated</h3>
+<ul>
+  <li><strong>% recycled</strong> — the "percentage of total waste" transferred to recycling and recovery, calculated and published directly by CBS for each authority.</li>
+  <li><strong>% landfilled</strong> — tons sent to landfill divided by total waste, as reported in the CBS table.</li>
+  <li><strong>Kg per capita per day</strong> — calculated and published directly by CBS.</li>
+  <li><strong>Population</strong> — for cities and local councils: taken directly from the CBS population file (2022 census) by authority name. For regional councils: summed from the population of all member localities (cross-referenced with the 2019 socioeconomic clusters file).</li>
+</ul>
+
+<h3>Authority reporting rate</h3>
+<p class="lede">A "non-reporting authority" on this site = an authority for which CBS did not publish a numeric figure in the municipal waste and recycling survey for that year. In practice, 226&ndash;253 out of 255&ndash;257 authorities report some waste data in every year between 2014 and 2024 (18 out of 257 did not report in 2024) &mdash; a far higher reporting rate than what commonly circulates in public discussion.</p>
+<div class="caveat">You may have come across a figure of "only about 120 authorities report," which occasionally circulates in public discussion. It originates from a <strong>June 2008</strong> Knesset Research and Information Center report (<a href="https://fs.knesset.gov.il/globaldocs/MMM/034c6b58-e9f7-e411-80c8-00155d010977/2_034c6b58-e9f7-e411-80c8-00155d010977_11_6689.pdf" target="_blank" rel="noopener">"Household Waste in Israel"</a>) &mdash; a report about compliance with a different regulatory reporting requirement to the Ministry of Environmental Protection (not the CBS survey this site is based on), describing a situation from roughly 18 years ago. Both figures are correct in their own context, but they are not directly comparable. Full detail in <code>data/CONFLICTS.md</code> in the source repository.</div>
+
+<h3>Known limitations</h3>
+<div class="caveat"><strong>National total.</strong> Summing the data of all individual authorities comes out about 7&ndash;8% lower than CBS's own official total line, because CBS's national total includes an estimate for authorities that don't report separately. That's why the "National Overview" page uses CBS's official total line, not a sum of the authority-level data.</div>
+<div class="caveat"><strong>District.</strong> We haven't yet found a data source mapping authority&rarr;district. This field is currently missing from the site (no filtering by district in v1).</div>
+<div class="caveat"><strong>Socioeconomic cluster.</strong> The only data source we found covers localities within regional councils only (995 localities, 54 councils) &mdash; with no coverage for cities and local councils, which make up most of the authorities shown on this site. So this field isn't shown at all in v1, to avoid presenting a partial and misleading figure.</div>
+<div class="caveat"><strong>Two authorities without population data</strong>: Sdot Dan and Sha'ar Shomron &mdash; not found in any of the population sources checked.</div>
+<div class="caveat"><strong>Recycling vs. other recovery</strong>: The CBS table combines "recycling" and "other recovery" (such as energy recovery) into a single figure. These cannot be separated with the current source.</div>
+
+<h3>Data updates</h3>
+<p>Last updated: {generated_at}. The data does not update automatically &mdash; a future update will require re-running the processing pipeline once CBS publishes new data.</p>
+"""
+    else:
+        body = f"""
 <h2>מקורות ומתודולוגיה</h2>
 <p class="lede">כל מספר באתר הזה מקושר למקור הרשמי שלו. עודכן לאחרונה: {generated_at}.</p>
 
@@ -694,7 +809,9 @@ def build_methodology_page(data: dict) -> str:
 <h3>עדכון הנתונים</h3>
 <p>עודכן לאחרונה: {generated_at}. הנתונים אינם מתעדכנים אוטומטית &mdash; עדכון עתידי ידרוש הרצה חוזרת של תהליך העיבוד כאשר הלמ"ס מפרסמת נתונים חדשים.</p>
 """
-    return shell("מתודולוגיה — מדד הפסולת", "methodology.html", body)
+    title = "מתודולוגיה — מדד הפסולת" if lang == "he" else "Methodology — Israel Waste Index"
+    lang_toggle_href = "en/methodology.html" if lang == "he" else "../methodology.html"
+    return shell(title, "methodology.html", body, root_prefix=root_prefix, nav_prefix="", lang=lang, lang_toggle_href=lang_toggle_href)
 
 
 def main():
@@ -717,20 +834,25 @@ def main():
     with open(f"{OUT_DIR}/methodology.html", "w", encoding="utf-8") as f:
         f.write(build_methodology_page(data))
 
-    # English (Phase 1): home, ranking, national only.
     with open(f"{OUT_DIR}/en/index.html", "w", encoding="utf-8") as f:
         f.write(build_home_page(data, lang="en"))
     with open(f"{OUT_DIR}/en/ranking.html", "w", encoding="utf-8") as f:
         f.write(build_ranking_page(data, lang="en"))
     with open(f"{OUT_DIR}/en/national.html", "w", encoding="utf-8") as f:
         f.write(build_national_page(data, lang="en"))
+    with open(f"{OUT_DIR}/en/wall-of-silence.html", "w", encoding="utf-8") as f:
+        f.write(build_wall_of_silence_page(data, lang="en"))
+    with open(f"{OUT_DIR}/en/glossary.html", "w", encoding="utf-8") as f:
+        f.write(build_glossary_page(data, lang="en"))
+    with open(f"{OUT_DIR}/en/methodology.html", "w", encoding="utf-8") as f:
+        f.write(build_methodology_page(data, lang="en"))
 
     for authority in data["authorities"]:
         path = f"{OUT_DIR}/authority/{authority['slug']}.html"
         with open(path, "w", encoding="utf-8") as f:
             f.write(build_authority_page(authority, data["years"]))
 
-    print(f"generated index/ranking/national/wall-of-silence/methodology + en/{{index,ranking,national}} + {len(data['authorities'])} authority pages")
+    print(f"generated index/ranking/national/wall-of-silence/glossary/methodology + en/{{index,ranking,national,wall-of-silence,glossary,methodology}} + {len(data['authorities'])} authority pages")
 
 
 if __name__ == "__main__":

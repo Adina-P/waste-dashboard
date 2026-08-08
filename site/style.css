@@ -488,6 +488,10 @@ a.back-link {
   padding: 64px 20px;
 }
 
+.hero-photo + .stat-row {
+  margin-top: 28px;
+}
+
 .hero-photo h2,
 .hero-photo p.lede {
   color: var(--hero-text);
@@ -518,13 +522,21 @@ a.feature-card:hover {
   border-color: var(--baseline);
 }
 
+.feature-card-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
 a.feature-card .icon {
   color: var(--series-1);
-  margin-bottom: 10px;
+  flex: none;
+  display: flex;
 }
 
 a.feature-card h3 {
-  margin: 0 0 4px;
+  margin: 0;
   font-size: 1.05rem;
   color: var(--text-primary);
 }
