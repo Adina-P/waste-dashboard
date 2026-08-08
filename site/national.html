@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>תמונת מצב ארצית — מדד הפסולת</title>
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <h1><a href="index.html">מדד הפסולת</a></h1>
+    <nav class="site-nav"><a href="index.html" class="">דירוג רשויות</a>
+<a href="national.html" class="active">תמונת מצב ארצית</a>
+<a href="wall-of-silence.html" class="">חומת השתיקה</a>
+<a href="methodology.html" class="">מתודולוגיה</a></nav>
+  </div>
+</header>
+<main class="wrap">
+
+<h2>תמונת מצב ארצית</h2>
+<p class="lede">סך הכל פסולת, יחס מיחזור מול הטמנה, והפער ליעדי 2030, על בסיס השורה הרשמית של הלמ"ס (לא סכימה של נתוני הרשויות הבודדות — ראו מתודולוגיה).</p>
+<div class="stat-row">
+  <div class="stat-tile"><div class="value">6,382,970</div><div class="label">סך טונות פסולת, 2024</div></div>
+  <div class="stat-tile"><div class="value">24.4%</div><div class="label">מיחזור והשבה</div></div>
+  <div class="stat-tile"><div class="value">75.6%</div><div class="label">הטמנה</div></div>
+  <div class="stat-tile"><div class="value">20%</div><div class="label">יעד הטמנה 2030</div></div>
+</div>
+<h3>מיחזור מול הטמנה, 2014&ndash;2024</h3>
+<div class="legend">
+  <span><span class="swatch" style="background:var(--series-1)"></span>מיחזור והשבה</span>
+  <span><span class="swatch" style="background:var(--series-6)"></span>הטמנה</span>
+</div>
+<div class="card"><div class="chart-box"><canvas id="national-chart"></canvas></div></div>
+<h3>הפער ליעד 2030</h3>
+<p class="lede">יעד הממשלה: 20% הטמנה / 54% מיחזור עד 2030. המצב הנוכחי (2024): 75.6% הטמנה, 24.4% מיחזור.</p>
+<div class="card"><div class="chart-box chart-box-short"><canvas id="gap-chart"></canvas></div></div>
+
+<h3>מה בעצם ממחזרים?</h3>
+<p class="lede">פירוט ארצי (לא לפי רשות) של החומרים המועברים למחזור והשבה. <strong>חומר אורגני</strong> &mdash; שיירי מזון וגזם המתאימים לקומפוסטציה &mdash; הוא הרכיב הגדול ביותר, ומהווה כ-41% מכלל החומרים הממוחזרים ב-2024.</p>
+<div class="caveat">פירוט זה זמין רק ברמה הארצית (מסך כל הרשויות יחד), ולא לפי רשות מקומית בודדת &mdash; הלמ"ס אינה מפרסמת פילוח חומרים ברמת הרשות.</div>
+<div class="card"><div class="chart-box"><canvas id="materials-chart"></canvas></div></div>
+
+<h3>רקע כלכלי ומדיניות: מחיר ההטמנה</h3>
+<p class="lede">
+היטל הטמנה הונהג בישראל ב-2007 כדי ליצור תמריץ שלילי להטמנה. עם זאת, לפי המשרד להגנת הסביבה, תעריף ההטמנה כיום (כולל ההיטל) עדיין נמוך משמעותית מהתעריף במדינות אירופה שבהן נאסרה הטמנה &mdash; מה שמותיר את ההטמנה זולה יחסית למתקני מיחזור והשבה. בשל כך, "קרן הניקיון" (הממומנת מהיטל ההטמנה) מסבסדת חלק ממתקני המיחזור וההשבה כדי לשמור על מחיר תחרותי מול הטמנה, אך לפי המשרד מנגנון זה לא יוכל להתרחב עם גידול מספר המתקנים העתידי.
+</p>
+<div class="caveat">אין בידינו נתוני עלות מדויקים (ש"ח לטונה) עבור הטמנה מול מיחזור ברמת רשות או ברמה ארצית &mdash; הפירוט לעיל הוא תיאור מדיניות איכותני, לא נתון מספרי. מקור: דוח מרכז המחקר והמידע של הכנסת, ינואר 2026.</div>
+<script src="vendor/chart.umd.min.js"></script>
+<script src="app.js"></script>
+<script src="national.js"></script>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    נתונים מהלשכה המרכזית לסטטיסטיקה ומ-data.gov.il ·
+    <a href="methodology.html">מקורות ומתודולוגיה</a>
+  </div>
+</footer>
+</body>
+</html>

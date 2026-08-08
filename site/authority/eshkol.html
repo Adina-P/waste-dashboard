@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>אשכול — מדד הפסולת</title>
+<link rel="stylesheet" href="../style.css">
+
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <h1><a href="../index.html">מדד הפסולת</a></h1>
+    <nav class="site-nav"><a href="../index.html" class="">דירוג רשויות</a>
+<a href="../national.html" class="">תמונת מצב ארצית</a>
+<a href="../wall-of-silence.html" class="">חומת השתיקה</a>
+<a href="../methodology.html" class="">מתודולוגיה</a></nav>
+  </div>
+</header>
+<main class="wrap">
+
+<a class="back-link" href="index.html">&rarr; חזרה לדירוג</a>
+<h2>אשכול</h2>
+<p class="lede">Eshkol</p>
+
+
+<div class="stat-row">
+  <div class="stat-tile"><div class="value">26.1%</div><div class="label">מיחזור והשבה (2024)</div></div>
+  <div class="stat-tile"><div class="value">18,372</div><div class="label">טונות פסולת (2024)</div></div>
+  <div class="stat-tile"><div class="value">2.64</div><div class="label">ק"ג לנפש ליום</div></div>
+  <div class="stat-tile"><div class="value">18,228</div><div class="label">אוכלוסייה (אמדן 2022)</div></div>
+</div>
+
+<h3>מגמה רב-שנתית: אחוז מיחזור לעומת יעד 2030 וממוצע ארצי</h3>
+<div class="legend">
+  <span><span class="swatch" style="background:var(--series-1)"></span>אשכול</span>
+  <span><span class="swatch" style="background:var(--text-muted)"></span>ממוצע ארצי</span>
+  <span><span class="swatch" style="background:var(--series-3)"></span>יעד 2030 (54%)</span>
+</div>
+<div class="card"><div class="chart-box"><canvas id="trend-chart"></canvas></div></div>
+<h3>נתונים מלאים לפי שנה</h3>
+<div class="card">
+<div class="table-scroll">
+<table class="ranked">
+<thead><tr><th>שנה</th><th>% מיחזור</th><th>% הטמנה</th><th>טונות</th><th>ק"ג לנפש ליום</th></tr></thead>
+<tbody id="authority-year-rows"></tbody>
+</table>
+</div>
+</div>
+<script src="../vendor/chart.umd.min.js"></script>
+<script src="../app.js"></script>
+<script>window.AUTHORITY_SLUG = "eshkol";</script>
+<script src="../authority.js"></script>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    נתונים מהלשכה המרכזית לסטטיסטיקה ומ-data.gov.il ·
+    <a href="../methodology.html">מקורות ומתודולוגיה</a>
+  </div>
+</footer>
+</body>
+</html>
