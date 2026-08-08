@@ -48,6 +48,8 @@ STRINGS = {
         "lang_toggle": "English",
         "footer_source": 'נתונים מהלשכה המרכזית לסטטיסטיקה ומ-data.gov.il',
         "footer_methodology": "מקורות ומתודולוגיה",
+        "footer_disclaimer": "זהו פרויקט עצמאי, ואינו אתר רשמי של גוף ממשלתי.",
+        "footer_credit": "נבנה על ידי",
         "hero_title": "מדד הפסולת",
         "hero_lede": "כל רשות מקומית בישראל, במקום אחד: כמה פסולת היא מייצרת, כמה ממנה ממוחזר וכמה מוטמן, ואיך זה עומד מול יעדי 2030 של הממשלה. כל מספר מקושר למקור הרשמי שלו.",
         "stat_recycled_national": "מיחזור והשבה ארצי, {year}",
@@ -130,6 +132,8 @@ STRINGS = {
         "lang_toggle": "עברית",
         "footer_source": "Data from Israel's Central Bureau of Statistics and data.gov.il",
         "footer_methodology": "Sources & Methodology",
+        "footer_disclaimer": "This is an independent project — not an official government site.",
+        "footer_credit": "Built by",
         "hero_title": "Israel Waste Index",
         "hero_lede": "See every local authority in Israel: how much waste it generates, how much gets recycled vs. landfilled, and how that compares to the government's 2030 targets. Every number links to its official source.",
         "stat_recycled_national": "National recycling, {year}",
@@ -312,8 +316,9 @@ def shell(
 </main>
 <footer class="site-footer">
   <div class="wrap">
-    {s["footer_source"]} ·
-    <a href="{root_prefix}methodology.html">{s["footer_methodology"]}</a>
+    <p>{s["footer_source"]} · <a href="{root_prefix}methodology.html">{s["footer_methodology"]}</a></p>
+    <p>{s["footer_disclaimer"]}</p>
+    <p>{s["footer_credit"]} Adina · <a href="https://www.linkedin.com/in/adina-paley-b54b911b9/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/Adina-P" target="_blank" rel="noopener">GitHub</a></p>
   </div>
 </footer>
 <script src="{root_prefix}theme.js?v={ASSET_VERSION}"></script>

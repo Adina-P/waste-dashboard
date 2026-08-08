@@ -369,6 +369,10 @@ footer.site-footer {
   padding: 30px 0;
 }
 
+footer.site-footer p {
+  margin: 4px 0;
+}
+
 footer.site-footer a {
   color: var(--text-secondary);
 }
