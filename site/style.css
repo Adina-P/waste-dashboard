@@ -245,7 +245,7 @@ table.ranked {
 table.ranked th,
 table.ranked td {
   padding: 9px 10px;
-  text-align: right;
+  text-align: start;
   border-bottom: 1px solid var(--gridline);
   font-variant-numeric: tabular-nums;
 }
