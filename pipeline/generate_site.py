@@ -127,7 +127,7 @@ STRINGS = {
         "hero_title": "Israel Waste Index",
         "hero_lede": "See every local authority in Israel: how much waste it generates, how much gets recycled vs. landfilled, and how that compares to the government's 2030 targets. Every number links to its official source.",
         "stat_recycled_national": "National recycling, {year}",
-        "stat_landfilled_national": "National landfilling",
+        "stat_landfilled_national": "National landfill",
         "stat_target_2030": "2030 recycling target",
         "stat_non_reporting": "Non-reporting authorities ({year})",
         "card_ranking_title": "Rankings",
@@ -159,16 +159,16 @@ STRINGS = {
         "th_trend": "Trend",
         "th_data_year": "Data Year",
         "national_title": "National Overview",
-        "national_lede": "Total waste, recycling vs. landfilling, and the gap to the 2030 targets, based on CBS's own official total (not a sum of individual authorities — see Methodology).",
+        "national_lede": "Total waste, recycling vs. landfill, and the gap to the 2030 targets, based on CBS's own official total (not a sum of individual authorities — see Methodology).",
         "stat_total_tons": "Total waste tons, {year}",
         "stat_recycled": "Recycling & recovery",
-        "stat_landfilled": "Landfilling",
+        "stat_landfilled": "Landfill",
         "stat_target_landfill_2030": "2030 landfill target",
-        "chart_recycled_vs_landfilled": 'Recycling vs. landfilling, <bdi dir="ltr">2014&ndash;2024</bdi>',
+        "chart_recycled_vs_landfilled": 'Recycling vs. landfill, <bdi dir="ltr">2014&ndash;2024</bdi>',
         "legend_recycled": "Recycling & recovery",
-        "legend_landfilled": "Landfilling",
+        "legend_landfilled": "Landfill",
         "gap_title": "The gap to the 2030 target",
-        "gap_lede": "Government target: 20% landfilling / 54% recycling by 2030. Current state ({year}): {landfilled} landfilling, {recycled} recycling.",
+        "gap_lede": "Government target: 20% landfill / 54% recycling by 2030. Current state ({year}): {landfilled} landfill, {recycled} recycling.",
         "gap_current": "Current ({year})",
         "gap_target": "2030 target",
         "leaders_title": "Leaders and laggards",
@@ -191,7 +191,7 @@ STRINGS = {
         "material_plastic": "Plastic",
         "material_cardboard": "Cardboard",
         "material_paper": "Paper",
-        "policy_title": "Economic & policy background: the price of landfilling",
+        "policy_title": "Economic & policy background: the price of landfill",
         "policy_text": 'A landfill levy was introduced in Israel in 2007 to create a financial disincentive for landfilling. Even so, according to the Ministry of Environmental Protection, today’s landfill tariff (including the levy) is still significantly lower than in European countries that have banned landfilling — which keeps landfilling relatively cheap compared to recycling and recovery facilities. As a result, the "Cleanliness Fund" (funded by the landfill levy) subsidizes some recycling and recovery facilities to keep them price-competitive with landfilling, though the Ministry says this mechanism won’t be able to scale as more facilities come online.',
         "policy_caveat": 'We do not have exact cost data (NIS per ton) for landfilling vs. recycling at the authority or national level — the description above is a qualitative policy summary, not a numeric figure. Source: <a href="https://fs.knesset.gov.il/25/Committees/25_cs_mmm_11061789.pdf" target="_blank" rel="noopener">Knesset Research and Information Center report, January 2026</a> (PDF).',
         "further_reading_title": "Further Reading",
@@ -340,8 +340,10 @@ def build_home_page(data: dict, lang: str = "he") -> str:
     hebrew_tag = "" if lang == "he" else f'<span class="hebrew-only-tag">{s["hebrew_only"]}</span>'
     body = f"""
 <div class="hero hero-photo" style="background-image: url('{root_prefix}images/hero.jpg?v={ASSET_VERSION}')">
+<div class="hero-inner">
 <h2>{s['hero_title']}</h2>
 <p class="lede">{s['hero_lede']}</p>
+</div>
 </div>
 <div class="stat-row">
   <div class="stat-tile">{ICON_RECYCLE}<div class="value">{fmt_pct(n['pct_recycled'])}</div><div class="label">{s['stat_recycled_national'].format(year=latest_year)}</div></div>

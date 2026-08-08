@@ -21,6 +21,11 @@
   --good: #0ca30c;
   --warning: #fab219;
   --critical: #d03b3b;
+
+  --hero-scrim-1: rgba(255, 255, 255, 0.5);
+  --hero-scrim-2: rgba(255, 255, 255, 0.8);
+  --hero-text: #0b0b0b;
+  --hero-text-secondary: rgba(11, 11, 11, 0.78);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -47,6 +52,11 @@
     --good: #0ca30c;
     --warning: #fab219;
     --critical: #d03b3b;
+
+    --hero-scrim-1: rgba(10, 10, 8, 0.55);
+    --hero-scrim-2: rgba(10, 10, 8, 0.82);
+    --hero-text: #ffffff;
+    --hero-text-secondary: rgba(255, 255, 255, 0.85);
   }
 }
 :root[data-theme="dark"] {
@@ -68,6 +78,11 @@
   --series-6: #e66767;
   --series-7: #d55181;
   --series-8: #d95926;
+
+  --hero-scrim-1: rgba(10, 10, 8, 0.55);
+  --hero-scrim-2: rgba(10, 10, 8, 0.82);
+  --hero-text: #ffffff;
+  --hero-text-secondary: rgba(255, 255, 255, 0.85);
 }
 
 * {
@@ -449,9 +464,11 @@ a.back-link {
 .hero-photo {
   position: relative;
   isolation: isolate;
-  padding: 48px 28px;
-  margin-top: 20px;
-  border-radius: 10px;
+  width: 100vw;
+  margin-inline-start: calc(50% - 50vw);
+  margin-inline-end: calc(50% - 50vw);
+  margin-top: 0;
+  padding: 0;
   overflow: hidden;
   background-size: cover;
   background-position: center 65%;
@@ -462,16 +479,22 @@ a.back-link {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(180deg, rgba(10, 10, 8, 0.6), rgba(10, 10, 8, 0.82));
+  background: linear-gradient(180deg, var(--hero-scrim-1), var(--hero-scrim-2));
+}
+
+.hero-photo .hero-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 64px 20px;
 }
 
 .hero-photo h2,
 .hero-photo p.lede {
-  color: #ffffff;
+  color: var(--hero-text);
 }
 
 .hero-photo p.lede {
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--hero-text-secondary);
 }
 
 .feature-grid {

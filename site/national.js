@@ -5,7 +5,7 @@
     lang === "en"
       ? {
           recycled: "Recycling & recovery",
-          landfilled: "Landfilling",
+          landfilled: "Landfill",
           material: {
             organic: "Organic material",
             yard_waste: "Yard waste",
