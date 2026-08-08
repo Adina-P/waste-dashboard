@@ -3,60 +3,57 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>מדד הפסולת — דירוג רשויות מקומיות</title>
-<link rel="stylesheet" href="style.css">
+<title>מדד הפסולת — נתוני פסולת ומיחזור לפי רשות מקומית</title>
+<link rel="stylesheet" href="style.css?v=ef198f69">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 
 </head>
 <body>
 <header class="site-header">
   <div class="wrap">
     <h1><a href="index.html">מדד הפסולת</a></h1>
-    <nav class="site-nav"><a href="index.html" class="active">דירוג רשויות</a>
+    <nav class="site-nav"><a href="index.html" class="active">בית</a>
+<a href="ranking.html" class="">דירוג רשויות</a>
 <a href="national.html" class="">תמונת מצב ארצית</a>
 <a href="wall-of-silence.html" class="">חומת השתיקה</a>
 <a href="methodology.html" class="">מתודולוגיה</a></nav>
+    <button id="theme-toggle" class="theme-toggle" type="button"><svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg><svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg></button>
   </div>
 </header>
 <main class="wrap">
 
-<h2>דירוג רשויות מקומיות</h2>
-<p class="lede">אחוז מיחזור, ק"ג פסולת לנפש ליום, ומגמה לעומת השנה הקודמת, לפי רשות מקומית. נתוני 2024 (או השנה האחרונה שדווחה).</p>
-<div class="caveat">
-  רשויות עם "לא דיווח/ה" לא מסרו נתונים לשנה זו — ראו <a href="wall-of-silence.html">חומת השתיקה</a>. חלק מהרשויות חסר להן נתוני אוכלוסייה מדויקים (ראו מתודולוגיה).
+<div class="hero">
+<h2>מדד הפסולת</h2>
+<p class="lede">רואים כל רשות מקומית בישראל: כמה פסולת היא מייצרת, כמה ממוחזר וכמה מוטמן, ואיך זה מול יעדי 2030 של הממשלה. כל מספר מקושר למקור הרשמי שלו.</p>
 </div>
-<div class="controls">
-  <input type="search" id="search" placeholder="חיפוש רשות...">
-  <select id="pop-filter">
-    <option value="">כל גדלי האוכלוסייה</option>
-    <option value="under_5k">עד 5,000</option>
-    <option value="5k_20k">5,000&ndash;20,000</option>
-    <option value="20k_50k">20,000&ndash;50,000</option>
-    <option value="50k_100k">50,000&ndash;100,000</option>
-    <option value="over_100k">מעל 100,000</option>
-  </select>
-  <span id="result-count" class="badge"></span>
+<div class="stat-row">
+  <div class="stat-tile"><div class="value">24.4%</div><div class="label">מיחזור והשבה ארצי, 2024</div></div>
+  <div class="stat-tile"><div class="value">75.6%</div><div class="label">הטמנה ארצית</div></div>
+  <div class="stat-tile"><div class="value">54%</div><div class="label">יעד מיחזור 2030</div></div>
+  <div class="stat-tile"><div class="value">19</div><div class="label">רשויות שלא דיווחו (2024)</div></div>
 </div>
-<div class="card">
-<div class="table-scroll">
-<table class="ranked" id="ranked-table">
-  <thead>
-    <tr>
-      <th data-key="name_he">רשות מקומית</th>
-      <th data-key="population">אוכלוסייה</th>
-      <th data-key="total_waste_tons">סך טונות</th>
-      <th data-key="pct_recycled" class="sorted">% מיחזור</th>
-      <th data-key="kg_per_capita_day">ק"ג לנפש ליום</th>
-      <th data-key="trend">מגמה</th>
-      <th data-key="data_year">שנת נתונים</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
+<div class="feature-grid">
+  <a class="feature-card" href="ranking.html">
+    <div class="icon"><svg class="icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 17V9M12 17V5M16 17v-4"/></svg></div>
+    <h3>דירוג רשויות</h3>
+    <p>טבלה מלאה, ניתנת למיון וסינון, של כל הרשויות המקומיות</p>
+  </a>
+  <a class="feature-card" href="national.html">
+    <div class="icon"><svg class="icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l3-4 3 2 4-6"/></svg></div>
+    <h3>תמונת מצב ארצית</h3>
+    <p>מגמות ארציות, פילוח חומרים, והפער ליעדי 2030</p>
+  </a>
+  <a class="feature-card" href="wall-of-silence.html">
+    <div class="icon"><svg class="icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5Z"/><path d="M17 9a3 3 0 0 1 0 6M20 6a7 7 0 0 1 0 12" opacity="0.35"/><path d="M2 2l20 20" opacity="0.6"/></svg></div>
+    <h3>חומת השתיקה</h3>
+    <p>הרשויות שלא מדווחות נתוני פסולת בכלל</p>
+  </a>
+  <a class="feature-card" href="methodology.html">
+    <div class="icon"><svg class="icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg></div>
+    <h3>מתודולוגיה</h3>
+    <p>כל המקורות, כל החישובים, כל המגבלות הידועות</p>
+  </a>
 </div>
-</div>
-<script src="vendor/chart.umd.min.js"></script>
-<script src="app.js"></script>
-<script src="index.js"></script>
 
 </main>
 <footer class="site-footer">
@@ -65,5 +62,6 @@
     <a href="methodology.html">מקורות ומתודולוגיה</a>
   </div>
 </footer>
+<script src="theme.js"></script>
 </body>
 </html>

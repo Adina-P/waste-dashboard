@@ -4,17 +4,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>מתודולוגיה — מדד הפסולת</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=ef198f69">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 
 </head>
 <body>
 <header class="site-header">
   <div class="wrap">
     <h1><a href="index.html">מדד הפסולת</a></h1>
-    <nav class="site-nav"><a href="index.html" class="">דירוג רשויות</a>
+    <nav class="site-nav"><a href="index.html" class="">בית</a>
+<a href="ranking.html" class="">דירוג רשויות</a>
 <a href="national.html" class="">תמונת מצב ארצית</a>
 <a href="wall-of-silence.html" class="">חומת השתיקה</a>
 <a href="methodology.html" class="active">מתודולוגיה</a></nav>
+    <button id="theme-toggle" class="theme-toggle" type="button"><svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg><svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg></button>
   </div>
 </header>
 <main class="wrap">
@@ -31,6 +34,14 @@
   <dt>אוכלוסייה לפי יישוב</dt>
   <dd>למ"ס, מפקד האוכלוסין והדיור 2022, "אוכלוסייה ומשקי בית לפי יישוב".</dd>
   <dd><a href="https://data.gov.il" target="_blank" rel="noopener">data.gov.il</a> (dataset 3bd97fde-6cc3-456d-ab63-1caad16b2b6a)</dd>
+
+  <dt>פתרונות קצה לפסולת עירונית בישראל &mdash; רקע ושאלות לדיון</dt>
+  <dd>מרכז המחקר והמידע של הכנסת, ינואר 2026. מקור לרקע הכלכלי-מדיניותי על היטל ההטמנה.</dd>
+  <dd><a href="https://fs.knesset.gov.il/25/Committees/25_cs_mmm_11061789.pdf" target="_blank" rel="noopener">fs.knesset.gov.il (PDF)</a></dd>
+
+  <dt>פסולת ביתית בישראל</dt>
+  <dd>מרכז המחקר והמידע של הכנסת, יוני 2008. מקור נתון הדיווח ההיסטורי (ראו "שיעור הדיווח" למטה).</dd>
+  <dd><a href="https://fs.knesset.gov.il/globaldocs/MMM/034c6b58-e9f7-e411-80c8-00155d010977/2_034c6b58-e9f7-e411-80c8-00155d010977_11_6689.pdf" target="_blank" rel="noopener">fs.knesset.gov.il (PDF)</a></dd>
 </dl>
 
 <h3>איך מחשבים כל מספר</h3>
@@ -43,7 +54,7 @@
 
 <h3>שיעור הדיווח של הרשויות</h3>
 <p class="lede">"רשות שלא דיווחה" באתר זה = רשות שהלמ"ס לא פרסמה עבורה נתון מספרי בסקר פסולת ומחזור ברשויות המקומיות לאותה שנה. בפועל, 226&ndash;253 מתוך 255&ndash;257 רשויות מדווחות נתוני פסולת כלשהם בכל שנה בין 2014 ל-2024 (18 מתוך 257 לא דיווחו ב-2024) &mdash; שיעור דיווח גבוה בהרבה ממה שנפוץ בשיח הציבורי.</p>
-<div class="caveat">תיקון: טיוטה מוקדמת של מסמך הפרויקט ציטטה נתון של "כ-120&ndash;125 מתוך כ-255 רשויות מדווחות", שמקורו התברר כדוח מרכז המחקר והמידע של הכנסת <strong>מיוני 2008</strong> ("פסולת ביתית בישראל") &mdash; דוח העוסק בעמידה בדרישת דיווח רגולטורית שונה למשרד להגנת הסביבה (לא בסקר הלמ"ס שעליו מבוסס אתר זה), ומתאר מצב לפני כ-18 שנה. שני הנתונים נכונים כל אחד להקשרו, אך אינם ניתנים להשוואה ישירה. פירוט מלא ב-<code>data/CONFLICTS.md</code> במאגר הקוד.</div>
+<div class="caveat">תיקון: טיוטה מוקדמת של מסמך הפרויקט ציטטה נתון של "כ-120&ndash;125 מתוך כ-255 רשויות מדווחות", שמקורו התברר כדוח מרכז המחקר והמידע של הכנסת <strong>מיוני 2008</strong> (<a href="https://fs.knesset.gov.il/globaldocs/MMM/034c6b58-e9f7-e411-80c8-00155d010977/2_034c6b58-e9f7-e411-80c8-00155d010977_11_6689.pdf" target="_blank" rel="noopener">"פסולת ביתית בישראל"</a>) &mdash; דוח העוסק בעמידה בדרישת דיווח רגולטורית שונה למשרד להגנת הסביבה (לא בסקר הלמ"ס שעליו מבוסס אתר זה), ומתאר מצב לפני כ-18 שנה. שני הנתונים נכונים כל אחד להקשרו, אך אינם ניתנים להשוואה ישירה. פירוט מלא ב-<code>data/CONFLICTS.md</code> במאגר הקוד.</div>
 
 <h3>מגבלות ידועות</h3>
 <div class="caveat"><strong>סך הפסולת הארצי.</strong> סכימה של נתוני כל הרשויות הבודדות נמוכה בכ-7&ndash;8% מהשורה הרשמית שמפרסמת הלמ"ס עצמה, מכיוון שהלמ"ס כוללת בסך הארצי הערכה לרשויות שאינן מדווחות בנפרד. לכן עמוד "תמונת מצב ארצית" משתמש בשורת הסך הרשמית של הלמ"ס, ולא בסכימה של נתוני הרשויות.</div>
@@ -62,5 +73,6 @@
     <a href="methodology.html">מקורות ומתודולוגיה</a>
   </div>
 </footer>
+<script src="theme.js"></script>
 </body>
 </html>

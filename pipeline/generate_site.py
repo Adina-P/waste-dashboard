@@ -4,6 +4,7 @@ Run with: uv run --with pandas --with xlrd python3 pipeline/generate_site.py
 (re-run build_site_data.py first if data/processed/waste.csv changed)
 """
 
+import hashlib
 import json
 import os
 import shutil
@@ -12,12 +13,24 @@ DATA_PATH = "site/data/waste.json"
 OUT_DIR = "site"
 LAST_YEAR_FALLBACK_DEPTH = 3  # how many years back to look for a reported value
 
+with open(f"{OUT_DIR}/style.css", "rb") as _f:
+    ASSET_VERSION = hashlib.sha256(_f.read()).hexdigest()[:8]
+
 NAV_ITEMS = [
-    ("index.html", "דירוג רשויות"),
+    ("index.html", "בית"),
+    ("ranking.html", "דירוג רשויות"),
     ("national.html", "תמונת מצב ארצית"),
     ("wall-of-silence.html", "חומת השתיקה"),
     ("methodology.html", "מתודולוגיה"),
 ]
+
+ICON_SUN = '<svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>'
+ICON_MOON = '<svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>'
+
+ICON_RANKING = '<svg class="icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 17V9M12 17V5M16 17v-4"/></svg>'
+ICON_NATIONAL = '<svg class="icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l3-4 3 2 4-6"/></svg>'
+ICON_SILENCE = '<svg class="icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5Z"/><path d="M17 9a3 3 0 0 1 0 6M20 6a7 7 0 0 1 0 12" opacity="0.35"/><path d="M2 2l20 20" opacity="0.6"/></svg>'
+ICON_METHOD = '<svg class="icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>'
 
 
 def shell(title: str, active: str, body: str, root_prefix: str = "", extra_head: str = "") -> str:
@@ -31,7 +44,8 @@ def shell(title: str, active: str, body: str, root_prefix: str = "", extra_head:
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title}</title>
-<link rel="stylesheet" href="{root_prefix}style.css">
+<link rel="stylesheet" href="{root_prefix}style.css?v={ASSET_VERSION}">
+<script>(function(){{try{{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}}catch(e){{}}}})();</script>
 {extra_head}
 </head>
 <body>
@@ -39,6 +53,7 @@ def shell(title: str, active: str, body: str, root_prefix: str = "", extra_head:
   <div class="wrap">
     <h1><a href="{root_prefix}index.html">מדד הפסולת</a></h1>
     <nav class="site-nav">{nav_html}</nav>
+    <button id="theme-toggle" class="theme-toggle" type="button">{ICON_SUN}{ICON_MOON}</button>
   </div>
 </header>
 <main class="wrap">
@@ -50,6 +65,7 @@ def shell(title: str, active: str, body: str, root_prefix: str = "", extra_head:
     <a href="{root_prefix}methodology.html">מקורות ומתודולוגיה</a>
   </div>
 </footer>
+<script src="{root_prefix}theme.js"></script>
 </body>
 </html>
 """
@@ -70,7 +86,51 @@ def fmt_num(v):
     return "—" if v is None else f"{v:,.0f}"
 
 
-def build_index_page(data: dict) -> str:
+def build_home_page(data: dict) -> str:
+    years = data["years"]
+    latest_year = str(years[-1])
+    n = data["national"][latest_year]
+    non_reporting = sum(
+        1 for a in data["authorities"] if not a["years"].get(latest_year, {}).get("reported")
+    )
+    body = f"""
+<div class="hero">
+<h2>מדד הפסולת</h2>
+<p class="lede">רואים כל רשות מקומית בישראל: כמה פסולת היא מייצרת, כמה ממוחזר וכמה מוטמן, ואיך זה מול יעדי 2030 של הממשלה. כל מספר מקושר למקור הרשמי שלו.</p>
+</div>
+<div class="stat-row">
+  <div class="stat-tile"><div class="value">{fmt_pct(n['pct_recycled'])}</div><div class="label">מיחזור והשבה ארצי, {latest_year}</div></div>
+  <div class="stat-tile"><div class="value">{fmt_pct(n['pct_landfilled'])}</div><div class="label">הטמנה ארצית</div></div>
+  <div class="stat-tile"><div class="value">54%</div><div class="label">יעד מיחזור 2030</div></div>
+  <div class="stat-tile"><div class="value">{non_reporting}</div><div class="label">רשויות שלא דיווחו ({latest_year})</div></div>
+</div>
+<div class="feature-grid">
+  <a class="feature-card" href="ranking.html">
+    <div class="icon">{ICON_RANKING}</div>
+    <h3>דירוג רשויות</h3>
+    <p>טבלה מלאה, ניתנת למיון וסינון, של כל הרשויות המקומיות</p>
+  </a>
+  <a class="feature-card" href="national.html">
+    <div class="icon">{ICON_NATIONAL}</div>
+    <h3>תמונת מצב ארצית</h3>
+    <p>מגמות ארציות, פילוח חומרים, והפער ליעדי 2030</p>
+  </a>
+  <a class="feature-card" href="wall-of-silence.html">
+    <div class="icon">{ICON_SILENCE}</div>
+    <h3>חומת השתיקה</h3>
+    <p>הרשויות שלא מדווחות נתוני פסולת בכלל</p>
+  </a>
+  <a class="feature-card" href="methodology.html">
+    <div class="icon">{ICON_METHOD}</div>
+    <h3>מתודולוגיה</h3>
+    <p>כל המקורות, כל החישובים, כל המגבלות הידועות</p>
+  </a>
+</div>
+"""
+    return shell("מדד הפסולת — נתוני פסולת ומיחזור לפי רשות מקומית", "index.html", body)
+
+
+def build_ranking_page(data: dict) -> str:
     years = data["years"]
     latest_year = str(years[-1])
     body = f"""
@@ -111,9 +171,9 @@ def build_index_page(data: dict) -> str:
 </div>
 <script src="vendor/chart.umd.min.js"></script>
 <script src="app.js"></script>
-<script src="index.js"></script>
+<script src="ranking.js"></script>
 """
-    return shell("מדד הפסולת — דירוג רשויות מקומיות", "index.html", body)
+    return shell("מדד הפסולת — דירוג רשויות מקומיות", "ranking.html", body)
 
 
 def build_authority_page(authority: dict, years: list[str]) -> str:
@@ -138,7 +198,7 @@ def build_authority_page(authority: dict, years: list[str]) -> str:
         not_current = '<div class="caveat">לרשות זו אין נתוני מיחזור מדווחים בכל השנים הזמינות (2014&ndash;2024).</div>'
 
     body = f"""
-<a class="back-link" href="index.html">&rarr; חזרה לדירוג</a>
+<a class="back-link" href="ranking.html">&rarr; חזרה לדירוג</a>
 <h2>{name_he}</h2>
 <p class="lede">{name_en}</p>
 {not_current}
@@ -200,7 +260,7 @@ def build_national_page(data: dict) -> str:
 <p class="lede">
 היטל הטמנה הונהג בישראל ב-2007 כדי ליצור תמריץ שלילי להטמנה. עם זאת, לפי המשרד להגנת הסביבה, תעריף ההטמנה כיום (כולל ההיטל) עדיין נמוך משמעותית מהתעריף במדינות אירופה שבהן נאסרה הטמנה &mdash; מה שמותיר את ההטמנה זולה יחסית למתקני מיחזור והשבה. בשל כך, "קרן הניקיון" (הממומנת מהיטל ההטמנה) מסבסדת חלק ממתקני המיחזור וההשבה כדי לשמור על מחיר תחרותי מול הטמנה, אך לפי המשרד מנגנון זה לא יוכל להתרחב עם גידול מספר המתקנים העתידי.
 </p>
-<div class="caveat">אין בידינו נתוני עלות מדויקים (ש"ח לטונה) עבור הטמנה מול מיחזור ברמת רשות או ברמה ארצית &mdash; הפירוט לעיל הוא תיאור מדיניות איכותני, לא נתון מספרי. מקור: דוח מרכז המחקר והמידע של הכנסת, ינואר 2026.</div>
+<div class="caveat">אין בידינו נתוני עלות מדויקים (ש"ח לטונה) עבור הטמנה מול מיחזור ברמת רשות או ברמה ארצית &mdash; הפירוט לעיל הוא תיאור מדיניות איכותני, לא נתון מספרי. מקור: <a href="https://fs.knesset.gov.il/25/Committees/25_cs_mmm_11061789.pdf" target="_blank" rel="noopener">דוח מרכז המחקר והמידע של הכנסת, ינואר 2026</a> (PDF).</div>
 <script src="vendor/chart.umd.min.js"></script>
 <script src="app.js"></script>
 <script src="national.js"></script>
@@ -251,6 +311,14 @@ def build_methodology_page(data: dict) -> str:
   <dt>אוכלוסייה לפי יישוב</dt>
   <dd>למ"ס, מפקד האוכלוסין והדיור 2022, "אוכלוסייה ומשקי בית לפי יישוב".</dd>
   <dd><a href="https://data.gov.il" target="_blank" rel="noopener">data.gov.il</a> (dataset 3bd97fde-6cc3-456d-ab63-1caad16b2b6a)</dd>
+
+  <dt>פתרונות קצה לפסולת עירונית בישראל &mdash; רקע ושאלות לדיון</dt>
+  <dd>מרכז המחקר והמידע של הכנסת, ינואר 2026. מקור לרקע הכלכלי-מדיניותי על היטל ההטמנה.</dd>
+  <dd><a href="https://fs.knesset.gov.il/25/Committees/25_cs_mmm_11061789.pdf" target="_blank" rel="noopener">fs.knesset.gov.il (PDF)</a></dd>
+
+  <dt>פסולת ביתית בישראל</dt>
+  <dd>מרכז המחקר והמידע של הכנסת, יוני 2008. מקור נתון הדיווח ההיסטורי (ראו "שיעור הדיווח" למטה).</dd>
+  <dd><a href="https://fs.knesset.gov.il/globaldocs/MMM/034c6b58-e9f7-e411-80c8-00155d010977/2_034c6b58-e9f7-e411-80c8-00155d010977_11_6689.pdf" target="_blank" rel="noopener">fs.knesset.gov.il (PDF)</a></dd>
 </dl>
 
 <h3>איך מחשבים כל מספר</h3>
@@ -263,7 +331,7 @@ def build_methodology_page(data: dict) -> str:
 
 <h3>שיעור הדיווח של הרשויות</h3>
 <p class="lede">"רשות שלא דיווחה" באתר זה = רשות שהלמ"ס לא פרסמה עבורה נתון מספרי בסקר פסולת ומחזור ברשויות המקומיות לאותה שנה. בפועל, 226&ndash;253 מתוך 255&ndash;257 רשויות מדווחות נתוני פסולת כלשהם בכל שנה בין 2014 ל-2024 (18 מתוך 257 לא דיווחו ב-2024) &mdash; שיעור דיווח גבוה בהרבה ממה שנפוץ בשיח הציבורי.</p>
-<div class="caveat">תיקון: טיוטה מוקדמת של מסמך הפרויקט ציטטה נתון של "כ-120&ndash;125 מתוך כ-255 רשויות מדווחות", שמקורו התברר כדוח מרכז המחקר והמידע של הכנסת <strong>מיוני 2008</strong> ("פסולת ביתית בישראל") &mdash; דוח העוסק בעמידה בדרישת דיווח רגולטורית שונה למשרד להגנת הסביבה (לא בסקר הלמ"ס שעליו מבוסס אתר זה), ומתאר מצב לפני כ-18 שנה. שני הנתונים נכונים כל אחד להקשרו, אך אינם ניתנים להשוואה ישירה. פירוט מלא ב-<code>data/CONFLICTS.md</code> במאגר הקוד.</div>
+<div class="caveat">תיקון: טיוטה מוקדמת של מסמך הפרויקט ציטטה נתון של "כ-120&ndash;125 מתוך כ-255 רשויות מדווחות", שמקורו התברר כדוח מרכז המחקר והמידע של הכנסת <strong>מיוני 2008</strong> (<a href="https://fs.knesset.gov.il/globaldocs/MMM/034c6b58-e9f7-e411-80c8-00155d010977/2_034c6b58-e9f7-e411-80c8-00155d010977_11_6689.pdf" target="_blank" rel="noopener">"פסולת ביתית בישראל"</a>) &mdash; דוח העוסק בעמידה בדרישת דיווח רגולטורית שונה למשרד להגנת הסביבה (לא בסקר הלמ"ס שעליו מבוסס אתר זה), ומתאר מצב לפני כ-18 שנה. שני הנתונים נכונים כל אחד להקשרו, אך אינם ניתנים להשוואה ישירה. פירוט מלא ב-<code>data/CONFLICTS.md</code> במאגר הקוד.</div>
 
 <h3>מגבלות ידועות</h3>
 <div class="caveat"><strong>סך הפסולת הארצי.</strong> סכימה של נתוני כל הרשויות הבודדות נמוכה בכ-7&ndash;8% מהשורה הרשמית שמפרסמת הלמ"ס עצמה, מכיוון שהלמ"ס כוללת בסך הארצי הערכה לרשויות שאינן מדווחות בנפרד. לכן עמוד "תמונת מצב ארצית" משתמש בשורת הסך הרשמית של הלמ"ס, ולא בסכימה של נתוני הרשויות.</div>
@@ -285,7 +353,9 @@ def main():
     os.makedirs(f"{OUT_DIR}/authority", exist_ok=True)
 
     with open(f"{OUT_DIR}/index.html", "w", encoding="utf-8") as f:
-        f.write(build_index_page(data))
+        f.write(build_home_page(data))
+    with open(f"{OUT_DIR}/ranking.html", "w", encoding="utf-8") as f:
+        f.write(build_ranking_page(data))
     with open(f"{OUT_DIR}/national.html", "w", encoding="utf-8") as f:
         f.write(build_national_page(data))
     with open(f"{OUT_DIR}/wall-of-silence.html", "w", encoding="utf-8") as f:
@@ -298,7 +368,7 @@ def main():
         with open(path, "w", encoding="utf-8") as f:
             f.write(build_authority_page(authority, data["years"]))
 
-    print(f"generated index/national/wall-of-silence/methodology + {len(data['authorities'])} authority pages")
+    print(f"generated index/ranking/national/wall-of-silence/methodology + {len(data['authorities'])} authority pages")
 
 
 if __name__ == "__main__":

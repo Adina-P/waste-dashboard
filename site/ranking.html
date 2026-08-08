@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>מדד הפסולת — דירוג רשויות מקומיות</title>
+<link rel="stylesheet" href="style.css?v=ef198f69">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <h1><a href="index.html">מדד הפסולת</a></h1>
+    <nav class="site-nav"><a href="index.html" class="">בית</a>
+<a href="ranking.html" class="active">דירוג רשויות</a>
+<a href="national.html" class="">תמונת מצב ארצית</a>
+<a href="wall-of-silence.html" class="">חומת השתיקה</a>
+<a href="methodology.html" class="">מתודולוגיה</a></nav>
+    <button id="theme-toggle" class="theme-toggle" type="button"><svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg><svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg></button>
+  </div>
+</header>
+<main class="wrap">
+
+<h2>דירוג רשויות מקומיות</h2>
+<p class="lede">אחוז מיחזור, ק"ג פסולת לנפש ליום, ומגמה לעומת השנה הקודמת, לפי רשות מקומית. נתוני 2024 (או השנה האחרונה שדווחה).</p>
+<div class="caveat">
+  רשויות עם "לא דיווח/ה" לא מסרו נתונים לשנה זו — ראו <a href="wall-of-silence.html">חומת השתיקה</a>. חלק מהרשויות חסר להן נתוני אוכלוסייה מדויקים (ראו מתודולוגיה).
+</div>
+<div class="controls">
+  <input type="search" id="search" placeholder="חיפוש רשות...">
+  <select id="pop-filter">
+    <option value="">כל גדלי האוכלוסייה</option>
+    <option value="under_5k">עד 5,000</option>
+    <option value="5k_20k">5,000&ndash;20,000</option>
+    <option value="20k_50k">20,000&ndash;50,000</option>
+    <option value="50k_100k">50,000&ndash;100,000</option>
+    <option value="over_100k">מעל 100,000</option>
+  </select>
+  <span id="result-count" class="badge"></span>
+</div>
+<div class="card">
+<div class="table-scroll">
+<table class="ranked" id="ranked-table">
+  <thead>
+    <tr>
+      <th data-key="name_he">רשות מקומית</th>
+      <th data-key="population">אוכלוסייה</th>
+      <th data-key="total_waste_tons">סך טונות</th>
+      <th data-key="pct_recycled" class="sorted">% מיחזור</th>
+      <th data-key="kg_per_capita_day">ק"ג לנפש ליום</th>
+      <th data-key="trend">מגמה</th>
+      <th data-key="data_year">שנת נתונים</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+</div>
+</div>
+<script src="vendor/chart.umd.min.js"></script>
+<script src="app.js"></script>
+<script src="ranking.js"></script>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    נתונים מהלשכה המרכזית לסטטיסטיקה ומ-data.gov.il ·
+    <a href="methodology.html">מקורות ומתודולוגיה</a>
+  </div>
+</footer>
+<script src="theme.js"></script>
+</body>
+</html>
