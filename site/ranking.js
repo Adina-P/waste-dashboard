@@ -1,4 +1,10 @@
 (async function () {
+  const lang = window.SITE_LANG || "he";
+  const t =
+    lang === "en"
+      ? { authorities: (n) => `${n} authorities`, notReported: "Not reported", locale: "en-US" }
+      : { authorities: (n) => `${n} רשויות`, notReported: "לא דיווחה", locale: "he" };
+
   const data = await loadWasteData();
   const years = data.years;
   const latestYear = String(years[years.length - 1]);
@@ -8,7 +14,7 @@
     const y = ly ? a.years[ly] : {};
     return {
       slug: a.slug,
-      name_he: a.name_he,
+      name: lang === "en" ? a.name_en : a.name_he,
       population: a.population,
       population_bucket: a.population_bucket,
       total_waste_tons: y.total_waste_tons ?? null,
@@ -29,19 +35,21 @@
   let sortKey = "pct_recycled";
   let sortDir = "desc";
 
-  function trendCell(t) {
-    if (t === null) return "—";
-    const cls = t > 0 ? "trend-up" : t < 0 ? "trend-down" : "";
-    const arrow = t > 0 ? "▲" : t < 0 ? "▼" : "—";
-    return `<span class="${cls}">${arrow} ${Math.abs(t).toFixed(1)}%</span>`;
+  function trendCell(tr) {
+    if (tr === null) return "—";
+    const cls = tr > 0 ? "trend-up" : tr < 0 ? "trend-down" : "";
+    const arrow = tr > 0 ? "▲" : tr < 0 ? "▼" : "—";
+    return `<span class="${cls}">${arrow} ${Math.abs(tr).toFixed(1)}%</span>`;
   }
+
+  const authorityHref = (slug) => (lang === "en" ? `../authority/${slug}.html` : `authority/${slug}.html`);
 
   function render() {
     const q = searchInput.value.trim();
     const pop = popFilter.value;
 
     let filtered = rows.filter((r) => {
-      if (q && !r.name_he.includes(q)) return false;
+      if (q && !r.name.includes(q)) return false;
       if (pop && r.population_bucket !== pop) return false;
       return true;
     });
@@ -51,11 +59,11 @@
       let bv = b[sortKey];
       if (av === null || av === undefined) av = sortDir === "desc" ? -Infinity : Infinity;
       if (bv === null || bv === undefined) bv = sortDir === "desc" ? -Infinity : Infinity;
-      if (typeof av === "string") return sortDir === "asc" ? av.localeCompare(bv, "he") : bv.localeCompare(av, "he");
+      if (typeof av === "string") return sortDir === "asc" ? av.localeCompare(bv, t.locale) : bv.localeCompare(av, t.locale);
       return sortDir === "asc" ? av - bv : bv - av;
     });
 
-    resultCount.textContent = `${filtered.length} רשויות`;
+    resultCount.textContent = t.authorities(filtered.length);
 
     tbody.innerHTML = filtered
       .map((r) => {
@@ -63,9 +71,9 @@
           ? r.reported_latest
             ? r.data_year
             : `<span class="not-reported">${r.data_year}*</span>`
-          : `<span class="not-reported">לא דיווחה</span>`;
+          : `<span class="not-reported">${t.notReported}</span>`;
         return `<tr>
-          <td class="name"><a href="authority/${r.slug}.html">${r.name_he}</a></td>
+          <td class="name"><a href="${authorityHref(r.slug)}">${r.name}</a></td>
           <td>${fmtNum(r.population)}</td>
           <td>${fmtNum(r.total_waste_tons)}</td>
           <td>${fmtPct(r.pct_recycled)}</td>
@@ -84,7 +92,7 @@
         sortDir = sortDir === "asc" ? "desc" : "asc";
       } else {
         sortKey = key;
-        sortDir = key === "name_he" ? "asc" : "desc";
+        sortDir = key === "name" ? "asc" : "desc";
       }
       headers.forEach((h) => h.classList.remove("sorted", "asc"));
       th.classList.add("sorted");

@@ -1,7 +1,8 @@
 // Shared utilities for the waste dashboard static site.
 
 function dataPath() {
-  return location.pathname.includes("/authority/") ? "../data/waste.json" : "data/waste.json";
+  const inSubdir = location.pathname.includes("/authority/") || location.pathname.includes("/en/");
+  return inSubdir ? "../data/waste.json" : "data/waste.json";
 }
 
 async function loadWasteData() {

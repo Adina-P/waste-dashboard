@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>מדד הפסולת — נתוני פסולת ומיחזור לפי רשות מקומית</title>
-<link rel="stylesheet" href="style.css?v=bee479e0">
+<link rel="stylesheet" href="style.css?v=716838ec">
 <script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 
 </head>
@@ -18,20 +18,23 @@
 <a href="wall-of-silence.html" class="">חומת השתיקה</a>
 <a href="glossary.html" class="">מילון מונחים</a>
 <a href="methodology.html" class="">מתודולוגיה</a></nav>
-    <button id="theme-toggle" class="theme-toggle" type="button"><svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg><svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg></button>
+    <div class="header-controls">
+      <a href="en/index.html" class="lang-toggle">English</a>
+      <button id="theme-toggle" class="theme-toggle" type="button"><svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg><svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg></button>
+    </div>
   </div>
 </header>
 <main class="wrap">
 
-<div class="hero">
+<div class="hero hero-photo" style="background-image: url('images/hero.jpg?v=716838ec')">
 <h2>מדד הפסולת</h2>
 <p class="lede">רואים כל רשות מקומית בישראל: כמה פסולת היא מייצרת, כמה ממוחזר וכמה מוטמן, ואיך זה מול יעדי 2030 של הממשלה. כל מספר מקושר למקור הרשמי שלו.</p>
 </div>
 <div class="stat-row">
-  <div class="stat-tile"><div class="value">24.4%</div><div class="label">מיחזור והשבה ארצי, 2024</div></div>
-  <div class="stat-tile"><div class="value">75.6%</div><div class="label">הטמנה ארצית</div></div>
-  <div class="stat-tile"><div class="value">54%</div><div class="label">יעד מיחזור 2030</div></div>
-  <div class="stat-tile"><div class="value">19</div><div class="label">רשויות שלא דיווחו (2024)</div></div>
+  <div class="stat-tile"><svg class="icon-sm" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg><div class="value">24.4%</div><div class="label">מיחזור והשבה ארצי, 2024</div></div>
+  <div class="stat-tile"><svg class="icon-sm" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg><div class="value">75.6%</div><div class="label">הטמנה ארצית</div></div>
+  <div class="stat-tile"><svg class="icon-sm" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg><div class="value">54%</div><div class="label">יעד מיחזור 2030</div></div>
+  <div class="stat-tile"><svg class="icon-sm" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5Z"/><path d="M2 2l20 20" opacity="0.6"/></svg><div class="value">19</div><div class="label">רשויות שלא דיווחו (2024)</div></div>
 </div>
 <div class="feature-grid">
   <a class="feature-card" href="ranking.html">
@@ -49,6 +52,11 @@
     <h3>חומת השתיקה</h3>
     <p>הרשויות שלא מדווחות נתוני פסולת בכלל</p>
   </a>
+  <a class="feature-card" href="glossary.html">
+    <div class="icon"><svg class="icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h7a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2Z"/><path d="M22 4h-7a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h8Z"/></svg></div>
+    <h3>מילון מונחים</h3>
+    <p>שיטות הטיפול בפסולת, ההשפעה הסביבתית, והשוואה לעולם</p>
+  </a>
   <a class="feature-card" href="methodology.html">
     <div class="icon"><svg class="icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg></div>
     <h3>מתודולוגיה</h3>
@@ -63,6 +71,7 @@
     <a href="methodology.html">מקורות ומתודולוגיה</a>
   </div>
 </footer>
-<script src="theme.js?v=bee479e0"></script>
+<script src="theme.js?v=716838ec"></script>
+<script data-goatcounter="https://adinap.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>

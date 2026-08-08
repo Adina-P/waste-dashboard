@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>תמונת מצב ארצית — מדד הפסולת</title>
-<link rel="stylesheet" href="style.css?v=bee479e0">
+<link rel="stylesheet" href="style.css?v=716838ec">
 <script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 
 </head>
@@ -18,7 +18,10 @@
 <a href="wall-of-silence.html" class="">חומת השתיקה</a>
 <a href="glossary.html" class="">מילון מונחים</a>
 <a href="methodology.html" class="">מתודולוגיה</a></nav>
-    <button id="theme-toggle" class="theme-toggle" type="button"><svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg><svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg></button>
+    <div class="header-controls">
+      <a href="en/national.html" class="lang-toggle">English</a>
+      <button id="theme-toggle" class="theme-toggle" type="button"><svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg><svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg></button>
+    </div>
   </div>
 </header>
 <main class="wrap">
@@ -26,10 +29,10 @@
 <h2>תמונת מצב ארצית</h2>
 <p class="lede">סך הכל פסולת, יחס מיחזור מול הטמנה, והפער ליעדי 2030, על בסיס השורה הרשמית של הלמ"ס (לא סכימה של נתוני הרשויות הבודדות — ראו מתודולוגיה).</p>
 <div class="stat-row">
-  <div class="stat-tile"><div class="value">6,382,970</div><div class="label">סך טונות פסולת, 2024</div></div>
-  <div class="stat-tile"><div class="value">24.4%</div><div class="label">מיחזור והשבה</div></div>
-  <div class="stat-tile"><div class="value">75.6%</div><div class="label">הטמנה</div></div>
-  <div class="stat-tile"><div class="value">20%</div><div class="label">יעד הטמנה 2030</div></div>
+  <div class="stat-tile"><svg class="icon-sm" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5 9 5 9-5Z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg><div class="value">6,382,970</div><div class="label">סך טונות פסולת, 2024</div></div>
+  <div class="stat-tile"><svg class="icon-sm" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg><div class="value">24.4%</div><div class="label">מיחזור והשבה</div></div>
+  <div class="stat-tile"><svg class="icon-sm" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg><div class="value">75.6%</div><div class="label">הטמנה</div></div>
+  <div class="stat-tile"><svg class="icon-sm" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg><div class="value">20%</div><div class="label">יעד הטמנה 2030</div></div>
 </div>
 <h3>מיחזור מול הטמנה, <bdi dir="ltr">2014&ndash;2024</bdi></h3>
 <div class="legend">
@@ -37,23 +40,45 @@
   <span><span class="swatch" style="background:var(--series-6)"></span>הטמנה</span>
 </div>
 <div class="card"><div class="chart-box"><canvas id="national-chart"></canvas></div></div>
-<h3>הפער ליעד 2030</h3>
+<h3><svg class="icon-sm" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg>הפער ליעד 2030</h3>
 <p class="lede">יעד הממשלה: 20% הטמנה / 54% מיחזור עד 2030. המצב הנוכחי (2024): 75.6% הטמנה, 24.4% מיחזור.</p>
 <div class="card"><div class="chart-box chart-box-short"><canvas id="gap-chart"></canvas></div></div>
 
-<h3>מה בעצם ממחזרים?</h3>
-<p class="lede">פירוט ארצי (לא לפי רשות) של החומרים המועברים למחזור והשבה. <strong>חומר אורגני</strong> &mdash; שיירי מזון וגזם המתאימים לקומפוסטציה &mdash; הוא הרכיב הגדול ביותר, ומהווה כ-41% מכלל החומרים הממוחזרים ב-2024.</p>
-<div class="caveat">פירוט זה זמין רק ברמה הארצית (מסך כל הרשויות יחד), ולא לפי רשות מקומית בודדת &mdash; הלמ"ס אינה מפרסמת פילוח חומרים ברמת הרשות.</div>
+<h3><svg class="icon-sm" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>המובילות והמפגרות</h3>
+<p class="lede">עשר הרשויות עם אחוז המיחזור הגבוה והנמוך ביותר ב-2024, מבין הרשויות שדיווחו נתונים.</p>
+<div class="legend"><span><strong>המיחזרות הטובות ביותר</strong></span></div>
+<div class="card"><div class="chart-box chart-box-tall"><canvas id="leaders-chart"></canvas></div></div>
+<div class="legend"><span><strong>המיחזרות הפחות טובות</strong></span></div>
+<div class="card"><div class="chart-box chart-box-tall"><canvas id="laggards-chart"></canvas></div></div>
+
+<h3><svg class="icon-sm" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><path d="M2 21v-1a6 6 0 0 1 6-6h2a6 6 0 0 1 6 6v1"/><circle cx="17" cy="8" r="2.5"/><path d="M23 21v-1a5 5 0 0 0-4-4.9"/></svg>אוכלוסייה מול שיעור מיחזור</h3>
+<p class="lede">האם רשויות גדולות יותר נוטות למחזר יותר? כל נקודה היא רשות מקומית אחת, 2024.</p>
+<div class="card"><div class="chart-box"><canvas id="scatter-chart"></canvas></div></div>
+
+<h3><svg class="icon-sm" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>מה בעצם ממחזרים?</h3>
+<p class="lede">פירוט ארצי (לא לפי רשות) של החומרים המועברים למחזור והשבה. <strong>חומר אורגני</strong> — שיירי מזון וגזם המתאימים לקומפוסטציה — הוא הרכיב הגדול ביותר, ומהווה כ-41% מכלל החומרים הממוחזרים ב-2024.</p>
+<div class="caveat">פירוט זה זמין רק ברמה הארצית (מסך כל הרשויות יחד), ולא לפי רשות מקומית בודדת — הלמ"ס אינה מפרסמת פילוח חומרים ברמת הרשות.</div>
 <div class="card"><div class="chart-box"><canvas id="materials-chart"></canvas></div></div>
 
 <h3>רקע כלכלי ומדיניות: מחיר ההטמנה</h3>
 <p class="lede">
-היטל הטמנה הונהג בישראל ב-2007 כדי ליצור תמריץ שלילי להטמנה. עם זאת, לפי המשרד להגנת הסביבה, תעריף ההטמנה כיום (כולל ההיטל) עדיין נמוך משמעותית מהתעריף במדינות אירופה שבהן נאסרה הטמנה &mdash; מה שמותיר את ההטמנה זולה יחסית למתקני מיחזור והשבה. בשל כך, "קרן הניקיון" (הממומנת מהיטל ההטמנה) מסבסדת חלק ממתקני המיחזור וההשבה כדי לשמור על מחיר תחרותי מול הטמנה, אך לפי המשרד מנגנון זה לא יוכל להתרחב עם גידול מספר המתקנים העתידי.
+היטל הטמנה הונהג בישראל ב-2007 כדי ליצור תמריץ שלילי להטמנה. עם זאת, לפי המשרד להגנת הסביבה, תעריף ההטמנה כיום (כולל ההיטל) עדיין נמוך משמעותית מהתעריף במדינות אירופה שבהן נאסרה הטמנה — מה שמותיר את ההטמנה זולה יחסית למתקני מיחזור והשבה. בשל כך, "קרן הניקיון" (הממומנת מהיטל ההטמנה) מסבסדת חלק ממתקני המיחזור וההשבה כדי לשמור על מחיר תחרותי מול הטמנה, אך לפי המשרד מנגנון זה לא יוכל להתרחב עם גידול מספר המתקנים העתידי.
 </p>
-<div class="caveat">אין בידינו נתוני עלות מדויקים (ש"ח לטונה) עבור הטמנה מול מיחזור ברמת רשות או ברמה ארצית &mdash; הפירוט לעיל הוא תיאור מדיניות איכותני, לא נתון מספרי. מקור: <a href="https://fs.knesset.gov.il/25/Committees/25_cs_mmm_11061789.pdf" target="_blank" rel="noopener">דוח מרכז המחקר והמידע של הכנסת, ינואר 2026</a> (PDF).</div>
+<div class="caveat">אין בידינו נתוני עלות מדויקים (ש"ח לטונה) עבור הטמנה מול מיחזור ברמת רשות או ברמה ארצית — הפירוט לעיל הוא תיאור מדיניות איכותני, לא נתון מספרי. מקור: <a href="https://fs.knesset.gov.il/25/Committees/25_cs_mmm_11061789.pdf" target="_blank" rel="noopener">דוח מרכז המחקר והמידע של הכנסת, ינואר 2026</a> (PDF).</div>
+
+<h3>קריאה נוספת</h3>
+<p class="lede">כתבות רקע מהתקשורת הישראלית על משבר הפסולת.</p>
+<div class="reading-list">
+<a class="reading-item" href="https://www.zavit.org.il/%D7%AA%D7%97%D7%96%D7%99%D7%AA-%D7%9E%D7%93%D7%90%D7%99%D7%92%D7%94-%D7%A2%D7%93-2040-%D7%94%D7%99%D7%A7%D7%A3-%D7%96%D7%99%D7%94%D7%95%D7%9D-%D7%94%D7%A4%D7%9C%D7%A1%D7%98%D7%99%D7%A7-%D7%99%D7%A9/" target="_blank" rel="noopener"><div class="reading-meta">זווית &middot; מאי 2026</div><h4>תחזית מדאיגה עד 2040: היקף זיהום הפלסטיק צפוי להכפיל את עצמו</h4><p>סקירה של דוח Pew על זיהום פלסטיק עולמי, עם התייחסות למדיניות מיחזור בישראל.</p></a>
+<a class="reading-item" href="https://www.calcalist.co.il/local_news/article/s1ruftx8fl" target="_blank" rel="noopener"><div class="reading-meta">כלכליסט &middot; אוגוסט 2026</div><h4>ישראל בדרך למשבר פסולת לאומי: האם האשפה תיערם ברחובות?</h4><p>דעה מאת ראובן לדיאנסקי, יו"ר איגוד ערים חבל דן (חיריה) וסגן ראש עיריית תל אביב-יפו, על משבר קיבולת ההטמנה.</p></a>
+<a class="reading-item" href="https://infospot.co.il/n/state_comptroller_municipal_waste_report" target="_blank" rel="noopener"><div class="reading-meta">infospot &middot; יולי 2025</div><h4>הנתונים של נפח ההטמנה נחשפים. הרפורמה בענף תקועה</h4><p>סיכום דוח מעקב של מבקר המדינה על משבר קיבולת ההטמנה ותקיעת רפורמת משק הפסולת.</p></a>
+<a class="reading-item" href="https://www.neaman.org.il/the-waste-management-crisis-a-national-project/" target="_blank" rel="noopener"><div class="reading-meta">מכון שמואל נאמן &middot; יוני 2023</div><h4>משבר משק הפסולת: פרויקט לאומי</h4><p>מסמך המלצות מדיניות: להכריז על משק הפסולת כפרויקט לאומי, להקים רשות ייעודית, ולתכנן לטווח של 20 שנה ומעלה.</p></a>
+<a class="reading-item" href="https://shakuf.co.il/63559" target="_blank" rel="noopener"><div class="reading-meta">שקוף &middot; יוני 2026</div><h4>שלושה צעדים להתחיל לתקן את משבר הפסולת בישראל</h4><p>מאת מרב אבדי, מנהלת רגולציה באדם טבע ודין: קיבוע מתאן ממטמנות, הפרדת פסולת אורגנית במגזר המוסדי, ואכיפה נגד שריפות פסולת בלתי חוקיות.</p></a>
+</div>
 <script src="vendor/chart.umd.min.js"></script>
-<script src="app.js?v=bee479e0"></script>
-<script src="national.js?v=bee479e0"></script>
+<script src="app.js?v=716838ec"></script>
+<script>window.SITE_LANG = "he";</script>
+<script src="national.js?v=716838ec"></script>
 
 </main>
 <footer class="site-footer">
@@ -62,6 +87,7 @@
     <a href="methodology.html">מקורות ומתודולוגיה</a>
   </div>
 </footer>
-<script src="theme.js?v=bee479e0"></script>
+<script src="theme.js?v=716838ec"></script>
+<script data-goatcounter="https://adinap.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>

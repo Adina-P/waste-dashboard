@@ -24,13 +24,217 @@ def _compute_asset_version() -> str:
 
 ASSET_VERSION = _compute_asset_version()
 
-NAV_ITEMS = [
+NAV_ITEMS_HE = [
     ("index.html", "בית"),
     ("ranking.html", "דירוג רשויות"),
     ("national.html", "תמונת מצב ארצית"),
     ("wall-of-silence.html", "חומת השתיקה"),
     ("glossary.html", "מילון מונחים"),
     ("methodology.html", "מתודולוגיה"),
+]
+
+# English (Phase 1): only pages that actually have an English translation.
+NAV_ITEMS_EN = [
+    ("index.html", "Home"),
+    ("ranking.html", "Rankings"),
+    ("national.html", "National Overview"),
+]
+
+STRINGS = {
+    "he": {
+        "site_title": "מדד הפסולת",
+        "lang_toggle": "English",
+        "footer_source": 'נתונים מהלשכה המרכזית לסטטיסטיקה ומ-data.gov.il',
+        "footer_methodology": "מקורות ומתודולוגיה",
+        "hero_title": "מדד הפסולת",
+        "hero_lede": "רואים כל רשות מקומית בישראל: כמה פסולת היא מייצרת, כמה ממוחזר וכמה מוטמן, ואיך זה מול יעדי 2030 של הממשלה. כל מספר מקושר למקור הרשמי שלו.",
+        "stat_recycled_national": "מיחזור והשבה ארצי, {year}",
+        "stat_landfilled_national": "הטמנה ארצית",
+        "stat_target_2030": "יעד מיחזור 2030",
+        "stat_non_reporting": "רשויות שלא דיווחו ({year})",
+        "card_ranking_title": "דירוג רשויות",
+        "card_ranking_desc": "טבלה מלאה, ניתנת למיון וסינון, של כל הרשויות המקומיות",
+        "card_national_title": "תמונת מצב ארצית",
+        "card_national_desc": "מגמות ארציות, פילוח חומרים, והפער ליעדי 2030",
+        "card_silence_title": "חומת השתיקה",
+        "card_silence_desc": "הרשויות שלא מדווחות נתוני פסולת בכלל",
+        "card_glossary_title": "מילון מונחים",
+        "card_glossary_desc": "שיטות הטיפול בפסולת, ההשפעה הסביבתית, והשוואה לעולם",
+        "card_methodology_title": "מתודולוגיה",
+        "card_methodology_desc": "כל המקורות, כל החישובים, כל המגבלות הידועות",
+        "hebrew_only": "עברית בלבד",
+        "ranking_title": "דירוג רשויות מקומיות",
+        "ranking_lede": 'אחוז מיחזור, ק"ג פסולת לנפש ליום, ומגמה לעומת השנה הקודמת, לפי רשות מקומית. נתוני {year} (או השנה האחרונה שדווחה).',
+        "ranking_caveat": 'רשויות עם "לא דיווח/ה" לא מסרו נתונים לשנה זו — ראו <a href="wall-of-silence.html">חומת השתיקה</a>. חלק מהרשויות חסר להן נתוני אוכלוסייה מדויקים (ראו מתודולוגיה).',
+        "search_placeholder": "חיפוש רשות...",
+        "pop_filter_all": "כל גדלי האוכלוסייה",
+        "pop_under_5k": "עד 5,000",
+        "pop_5k_20k": "5,000–20,000",
+        "pop_20k_50k": "20,000–50,000",
+        "pop_50k_100k": "50,000–100,000",
+        "pop_over_100k": "מעל 100,000",
+        "th_authority": "רשות מקומית",
+        "th_population": "אוכלוסייה",
+        "th_total_tons": "סך טונות",
+        "th_pct_recycled": "% מיחזור",
+        "th_kg_capita": 'ק"ג לנפש ליום',
+        "th_trend": "מגמה",
+        "th_data_year": "שנת נתונים",
+        "national_title": "תמונת מצב ארצית",
+        "national_lede": 'סך הכל פסולת, יחס מיחזור מול הטמנה, והפער ליעדי 2030, על בסיס השורה הרשמית של הלמ"ס (לא סכימה של נתוני הרשויות הבודדות — ראו מתודולוגיה).',
+        "stat_total_tons": "סך טונות פסולת, {year}",
+        "stat_recycled": "מיחזור והשבה",
+        "stat_landfilled": "הטמנה",
+        "stat_target_landfill_2030": "יעד הטמנה 2030",
+        "chart_recycled_vs_landfilled": 'מיחזור מול הטמנה, <bdi dir="ltr">2014&ndash;2024</bdi>',
+        "legend_recycled": "מיחזור והשבה",
+        "legend_landfilled": "הטמנה",
+        "gap_title": "הפער ליעד 2030",
+        "gap_lede": "יעד הממשלה: 20% הטמנה / 54% מיחזור עד 2030. המצב הנוכחי ({year}): {landfilled} הטמנה, {recycled} מיחזור.",
+        "gap_current": "מצב נוכחי ({year})",
+        "gap_target": "יעד 2030",
+        "leaders_title": "המובילות והמפגרות",
+        "leaders_lede": "עשר הרשויות עם אחוז המיחזור הגבוה והנמוך ביותר ב-{year}, מבין הרשויות שדיווחו נתונים.",
+        "leaders_label": "המיחזרות הטובות ביותר",
+        "laggards_label": "המיחזרות הפחות טובות",
+        "scatter_title": "אוכלוסייה מול שיעור מיחזור",
+        "scatter_lede": "האם רשויות גדולות יותר נוטות למחזר יותר? כל נקודה היא רשות מקומית אחת, {year}.",
+        "scatter_x_label": "אוכלוסייה (סקאלה לוגריתמית)",
+        "scatter_y_label": "% מיחזור",
+        "scatter_tooltip": "{name}: {pop} תושבים, {pct}%",
+        "materials_title": "מה בעצם ממחזרים?",
+        "materials_lede": 'פירוט ארצי (לא לפי רשות) של החומרים המועברים למחזור והשבה. <strong>חומר אורגני</strong> — שיירי מזון וגזם המתאימים לקומפוסטציה — הוא הרכיב הגדול ביותר, ומהווה כ-41% מכלל החומרים הממוחזרים ב-2024.',
+        "materials_caveat": 'פירוט זה זמין רק ברמה הארצית (מסך כל הרשויות יחד), ולא לפי רשות מקומית בודדת — הלמ"ס אינה מפרסמת פילוח חומרים ברמת הרשות.',
+        "material_other": "אחר",
+        "material_yard_waste": "גזם",
+        "material_organic": "חומר אורגני",
+        "material_glass": "זכוכית",
+        "material_metal": "מתכת",
+        "material_plastic": "פלסטיק",
+        "material_cardboard": "קרטון",
+        "material_paper": "נייר",
+        "policy_title": "רקע כלכלי ומדיניות: מחיר ההטמנה",
+        "policy_text": 'היטל הטמנה הונהג בישראל ב-2007 כדי ליצור תמריץ שלילי להטמנה. עם זאת, לפי המשרד להגנת הסביבה, תעריף ההטמנה כיום (כולל ההיטל) עדיין נמוך משמעותית מהתעריף במדינות אירופה שבהן נאסרה הטמנה — מה שמותיר את ההטמנה זולה יחסית למתקני מיחזור והשבה. בשל כך, "קרן הניקיון" (הממומנת מהיטל ההטמנה) מסבסדת חלק ממתקני המיחזור וההשבה כדי לשמור על מחיר תחרותי מול הטמנה, אך לפי המשרד מנגנון זה לא יוכל להתרחב עם גידול מספר המתקנים העתידי.',
+        "policy_caveat": 'אין בידינו נתוני עלות מדויקים (ש"ח לטונה) עבור הטמנה מול מיחזור ברמת רשות או ברמה ארצית — הפירוט לעיל הוא תיאור מדיניות איכותני, לא נתון מספרי. מקור: <a href="https://fs.knesset.gov.il/25/Committees/25_cs_mmm_11061789.pdf" target="_blank" rel="noopener">דוח מרכז המחקר והמידע של הכנסת, ינואר 2026</a> (PDF).',
+        "further_reading_title": "קריאה נוספת",
+        "further_reading_lede": "כתבות רקע מהתקשורת הישראלית על משבר הפסולת.",
+    },
+    "en": {
+        "site_title": "Israel Waste Index",
+        "lang_toggle": "עברית",
+        "footer_source": "Data from Israel's Central Bureau of Statistics and data.gov.il",
+        "footer_methodology": "Sources & Methodology",
+        "hero_title": "Israel Waste Index",
+        "hero_lede": "See every local authority in Israel: how much waste it generates, how much gets recycled vs. landfilled, and how that compares to the government's 2030 targets. Every number links to its official source.",
+        "stat_recycled_national": "National recycling, {year}",
+        "stat_landfilled_national": "National landfilling",
+        "stat_target_2030": "2030 recycling target",
+        "stat_non_reporting": "Non-reporting authorities ({year})",
+        "card_ranking_title": "Rankings",
+        "card_ranking_desc": "A full, sortable, filterable table of every local authority",
+        "card_national_title": "National Overview",
+        "card_national_desc": "National trends, material breakdown, and the gap to the 2030 targets",
+        "card_silence_title": "Wall of Silence",
+        "card_silence_desc": "Authorities that don't report waste data at all",
+        "card_glossary_title": "Glossary",
+        "card_glossary_desc": "Waste treatment methods, their environmental impact, and international comparison",
+        "card_methodology_title": "Methodology",
+        "card_methodology_desc": "Every source, every calculation, every known limitation",
+        "hebrew_only": "Hebrew only",
+        "ranking_title": "Local Authority Rankings",
+        "ranking_lede": "% recycled, kg of waste per person per day, and year-over-year trend, by local authority. {year} data (or the most recent year reported).",
+        "ranking_caveat": 'Authorities marked "not reported" did not submit data for this year — see the <a href="wall-of-silence.html">Wall of Silence</a>. Some authorities are missing exact population figures (see Methodology).',
+        "search_placeholder": "Search authority...",
+        "pop_filter_all": "All population sizes",
+        "pop_under_5k": "Under 5,000",
+        "pop_5k_20k": "5,000–20,000",
+        "pop_20k_50k": "20,000–50,000",
+        "pop_50k_100k": "50,000–100,000",
+        "pop_over_100k": "Over 100,000",
+        "th_authority": "Local Authority",
+        "th_population": "Population",
+        "th_total_tons": "Total Tons",
+        "th_pct_recycled": "% Recycled",
+        "th_kg_capita": "Kg/capita/day",
+        "th_trend": "Trend",
+        "th_data_year": "Data Year",
+        "national_title": "National Overview",
+        "national_lede": "Total waste, recycling vs. landfilling, and the gap to the 2030 targets, based on CBS's own official total (not a sum of individual authorities — see Methodology).",
+        "stat_total_tons": "Total waste tons, {year}",
+        "stat_recycled": "Recycling & recovery",
+        "stat_landfilled": "Landfilling",
+        "stat_target_landfill_2030": "2030 landfill target",
+        "chart_recycled_vs_landfilled": 'Recycling vs. landfilling, <bdi dir="ltr">2014&ndash;2024</bdi>',
+        "legend_recycled": "Recycling & recovery",
+        "legend_landfilled": "Landfilling",
+        "gap_title": "The gap to the 2030 target",
+        "gap_lede": "Government target: 20% landfilling / 54% recycling by 2030. Current state ({year}): {landfilled} landfilling, {recycled} recycling.",
+        "gap_current": "Current ({year})",
+        "gap_target": "2030 target",
+        "leaders_title": "Leaders and laggards",
+        "leaders_lede": "The ten authorities with the highest and lowest recycling rates in {year}, among those that reported data.",
+        "leaders_label": "Best recyclers",
+        "laggards_label": "Worst recyclers",
+        "scatter_title": "Population vs. recycling rate",
+        "scatter_lede": "Do bigger authorities tend to recycle more? Each point is one local authority, {year}.",
+        "scatter_x_label": "Population (logarithmic scale)",
+        "scatter_y_label": "% recycled",
+        "scatter_tooltip": "{name}: {pop} residents, {pct}%",
+        "materials_title": "What actually gets recycled?",
+        "materials_lede": 'National breakdown (not by authority) of materials transferred to recycling and recovery. <strong>Organic material</strong> — food scraps and yard waste suitable for composting — is the largest single component, making up about 41% of everything recycled in 2024.',
+        "materials_caveat": "This breakdown is only available at the national level (all authorities combined), not per individual authority — CBS does not publish a material breakdown at the authority level.",
+        "material_other": "Other",
+        "material_yard_waste": "Yard waste",
+        "material_organic": "Organic material",
+        "material_glass": "Glass",
+        "material_metal": "Metal",
+        "material_plastic": "Plastic",
+        "material_cardboard": "Cardboard",
+        "material_paper": "Paper",
+        "policy_title": "Economic & policy background: the price of landfilling",
+        "policy_text": 'A landfill levy was introduced in Israel in 2007 to create a financial disincentive for landfilling. Even so, according to the Ministry of Environmental Protection, today’s landfill tariff (including the levy) is still significantly lower than in European countries that have banned landfilling — which keeps landfilling relatively cheap compared to recycling and recovery facilities. As a result, the "Cleanliness Fund" (funded by the landfill levy) subsidizes some recycling and recovery facilities to keep them price-competitive with landfilling, though the Ministry says this mechanism won’t be able to scale as more facilities come online.',
+        "policy_caveat": 'We do not have exact cost data (NIS per ton) for landfilling vs. recycling at the authority or national level — the description above is a qualitative policy summary, not a numeric figure. Source: <a href="https://fs.knesset.gov.il/25/Committees/25_cs_mmm_11061789.pdf" target="_blank" rel="noopener">Knesset Research and Information Center report, January 2026</a> (PDF).',
+        "further_reading_title": "Further Reading",
+        "further_reading_lede": "Background coverage from the Israeli press on the waste crisis (Hebrew).",
+    },
+}
+
+FURTHER_READING = [
+    {
+        "title": "תחזית מדאיגה עד 2040: היקף זיהום הפלסטיק צפוי להכפיל את עצמו",
+        "outlet": "זווית",
+        "date": "מאי 2026",
+        "desc": "סקירה של דוח Pew על זיהום פלסטיק עולמי, עם התייחסות למדיניות מיחזור בישראל.",
+        "url": "https://www.zavit.org.il/%D7%AA%D7%97%D7%96%D7%99%D7%AA-%D7%9E%D7%93%D7%90%D7%99%D7%92%D7%94-%D7%A2%D7%93-2040-%D7%94%D7%99%D7%A7%D7%A3-%D7%96%D7%99%D7%94%D7%95%D7%9D-%D7%94%D7%A4%D7%9C%D7%A1%D7%98%D7%99%D7%A7-%D7%99%D7%A9/",
+    },
+    {
+        "title": "ישראל בדרך למשבר פסולת לאומי: האם האשפה תיערם ברחובות?",
+        "outlet": "כלכליסט",
+        "date": "אוגוסט 2026",
+        "desc": 'דעה מאת ראובן לדיאנסקי, יו"ר איגוד ערים חבל דן (חיריה) וסגן ראש עיריית תל אביב-יפו, על משבר קיבולת ההטמנה.',
+        "url": "https://www.calcalist.co.il/local_news/article/s1ruftx8fl",
+    },
+    {
+        "title": "הנתונים של נפח ההטמנה נחשפים. הרפורמה בענף תקועה",
+        "outlet": "infospot",
+        "date": "יולי 2025",
+        "desc": "סיכום דוח מעקב של מבקר המדינה על משבר קיבולת ההטמנה ותקיעת רפורמת משק הפסולת.",
+        "url": "https://infospot.co.il/n/state_comptroller_municipal_waste_report",
+    },
+    {
+        "title": "משבר משק הפסולת: פרויקט לאומי",
+        "outlet": "מכון שמואל נאמן",
+        "date": "יוני 2023",
+        "desc": 'מסמך המלצות מדיניות: להכריז על משק הפסולת כפרויקט לאומי, להקים רשות ייעודית, ולתכנן לטווח של 20 שנה ומעלה.',
+        "url": "https://www.neaman.org.il/the-waste-management-crisis-a-national-project/",
+    },
+    {
+        "title": "שלושה צעדים להתחיל לתקן את משבר הפסולת בישראל",
+        "outlet": "שקוף",
+        "date": "יוני 2026",
+        "desc": 'מאת מרב אבדי, מנהלת רגולציה באדם טבע ודין: קיבוע מתאן ממטמנות, הפרדת פסולת אורגנית במגזר המוסדי, ואכיפה נגד שריפות פסולת בלתי חוקיות.',
+        "url": "https://shakuf.co.il/63559",
+    },
 ]
 
 ICON_SUN = '<svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>'
@@ -40,15 +244,40 @@ ICON_RANKING = '<svg class="icon" width="26" height="26" viewBox="0 0 24 24" fil
 ICON_NATIONAL = '<svg class="icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l3-4 3 2 4-6"/></svg>'
 ICON_SILENCE = '<svg class="icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5Z"/><path d="M17 9a3 3 0 0 1 0 6M20 6a7 7 0 0 1 0 12" opacity="0.35"/><path d="M2 2l20 20" opacity="0.6"/></svg>'
 ICON_METHOD = '<svg class="icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>'
+ICON_GLOSSARY = '<svg class="icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h7a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2Z"/><path d="M22 4h-7a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h8Z"/></svg>'
+
+ICON_RECYCLE = '<svg class="icon-sm" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>'
+ICON_LANDFILL = '<svg class="icon-sm" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>'
+ICON_TARGET = '<svg class="icon-sm" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg>'
+ICON_POPULATION = '<svg class="icon-sm" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><path d="M2 21v-1a6 6 0 0 1 6-6h2a6 6 0 0 1 6 6v1"/><circle cx="17" cy="8" r="2.5"/><path d="M23 21v-1a5 5 0 0 0-4-4.9"/></svg>'
+ICON_TONS = '<svg class="icon-sm" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5 9 5 9-5Z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg>'
+ICON_SILENCE_SM = '<svg class="icon-sm" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5Z"/><path d="M2 2l20 20" opacity="0.6"/></svg>'
 
 
-def shell(title: str, active: str, body: str, root_prefix: str = "", extra_head: str = "") -> str:
+def shell(
+    title: str,
+    active: str,
+    body: str,
+    root_prefix: str = "",
+    extra_head: str = "",
+    lang: str = "he",
+    nav_prefix: str | None = None,
+    lang_toggle_href: str | None = None,
+) -> str:
+    s = STRINGS[lang]
+    nav_items = NAV_ITEMS_EN if lang == "en" else NAV_ITEMS_HE
+    if nav_prefix is None:
+        nav_prefix = root_prefix
     nav_html = "\n".join(
-        f'<a href="{root_prefix}{href}" class="{"active" if href == active else ""}">{label}</a>'
-        for href, label in NAV_ITEMS
+        f'<a href="{nav_prefix}{href}" class="{"active" if href == active else ""}">{label}</a>'
+        for href, label in nav_items
     )
+    lang_toggle_html = (
+        f'<a href="{lang_toggle_href}" class="lang-toggle">{s["lang_toggle"]}</a>' if lang_toggle_href else ""
+    )
+    dir_attr = "rtl" if lang == "he" else "ltr"
     return f"""<!doctype html>
-<html lang="he" dir="rtl">
+<html lang="{lang}" dir="{dir_attr}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -60,9 +289,12 @@ def shell(title: str, active: str, body: str, root_prefix: str = "", extra_head:
 <body>
 <header class="site-header">
   <div class="wrap">
-    <h1><a href="{root_prefix}index.html">מדד הפסולת</a></h1>
+    <h1><a href="{nav_prefix}index.html">{s["site_title"]}</a></h1>
     <nav class="site-nav">{nav_html}</nav>
-    <button id="theme-toggle" class="theme-toggle" type="button">{ICON_SUN}{ICON_MOON}</button>
+    <div class="header-controls">
+      {lang_toggle_html}
+      <button id="theme-toggle" class="theme-toggle" type="button">{ICON_SUN}{ICON_MOON}</button>
+    </div>
   </div>
 </header>
 <main class="wrap">
@@ -70,11 +302,12 @@ def shell(title: str, active: str, body: str, root_prefix: str = "", extra_head:
 </main>
 <footer class="site-footer">
   <div class="wrap">
-    נתונים מהלשכה המרכזית לסטטיסטיקה ומ-data.gov.il ·
-    <a href="{root_prefix}methodology.html">מקורות ומתודולוגיה</a>
+    {s["footer_source"]} ·
+    <a href="{root_prefix}methodology.html">{s["footer_methodology"]}</a>
   </div>
 </footer>
 <script src="{root_prefix}theme.js?v={ASSET_VERSION}"></script>
+<script data-goatcounter="https://adinap.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
 """
@@ -95,68 +328,80 @@ def fmt_num(v):
     return "—" if v is None else f"{v:,.0f}"
 
 
-def build_home_page(data: dict) -> str:
+def build_home_page(data: dict, lang: str = "he") -> str:
+    s = STRINGS[lang]
     years = data["years"]
     latest_year = str(years[-1])
     n = data["national"][latest_year]
     non_reporting = sum(
         1 for a in data["authorities"] if not a["years"].get(latest_year, {}).get("reported")
     )
+    root_prefix = "" if lang == "he" else "../"
+    hebrew_tag = "" if lang == "he" else f'<span class="hebrew-only-tag">{s["hebrew_only"]}</span>'
     body = f"""
-<div class="hero">
-<h2>מדד הפסולת</h2>
-<p class="lede">רואים כל רשות מקומית בישראל: כמה פסולת היא מייצרת, כמה ממוחזר וכמה מוטמן, ואיך זה מול יעדי 2030 של הממשלה. כל מספר מקושר למקור הרשמי שלו.</p>
+<div class="hero hero-photo" style="background-image: url('{root_prefix}images/hero.jpg?v={ASSET_VERSION}')">
+<h2>{s['hero_title']}</h2>
+<p class="lede">{s['hero_lede']}</p>
 </div>
 <div class="stat-row">
-  <div class="stat-tile"><div class="value">{fmt_pct(n['pct_recycled'])}</div><div class="label">מיחזור והשבה ארצי, {latest_year}</div></div>
-  <div class="stat-tile"><div class="value">{fmt_pct(n['pct_landfilled'])}</div><div class="label">הטמנה ארצית</div></div>
-  <div class="stat-tile"><div class="value">54%</div><div class="label">יעד מיחזור 2030</div></div>
-  <div class="stat-tile"><div class="value">{non_reporting}</div><div class="label">רשויות שלא דיווחו ({latest_year})</div></div>
+  <div class="stat-tile">{ICON_RECYCLE}<div class="value">{fmt_pct(n['pct_recycled'])}</div><div class="label">{s['stat_recycled_national'].format(year=latest_year)}</div></div>
+  <div class="stat-tile">{ICON_LANDFILL}<div class="value">{fmt_pct(n['pct_landfilled'])}</div><div class="label">{s['stat_landfilled_national']}</div></div>
+  <div class="stat-tile">{ICON_TARGET}<div class="value">54%</div><div class="label">{s['stat_target_2030']}</div></div>
+  <div class="stat-tile">{ICON_SILENCE_SM}<div class="value">{non_reporting}</div><div class="label">{s['stat_non_reporting'].format(year=latest_year)}</div></div>
 </div>
 <div class="feature-grid">
   <a class="feature-card" href="ranking.html">
     <div class="icon">{ICON_RANKING}</div>
-    <h3>דירוג רשויות</h3>
-    <p>טבלה מלאה, ניתנת למיון וסינון, של כל הרשויות המקומיות</p>
+    <h3>{s['card_ranking_title']}</h3>
+    <p>{s['card_ranking_desc']}</p>
   </a>
   <a class="feature-card" href="national.html">
     <div class="icon">{ICON_NATIONAL}</div>
-    <h3>תמונת מצב ארצית</h3>
-    <p>מגמות ארציות, פילוח חומרים, והפער ליעדי 2030</p>
+    <h3>{s['card_national_title']}</h3>
+    <p>{s['card_national_desc']}</p>
   </a>
-  <a class="feature-card" href="wall-of-silence.html">
+  <a class="feature-card" href="{root_prefix}wall-of-silence.html">
     <div class="icon">{ICON_SILENCE}</div>
-    <h3>חומת השתיקה</h3>
-    <p>הרשויות שלא מדווחות נתוני פסולת בכלל</p>
+    <h3>{s['card_silence_title']}{hebrew_tag}</h3>
+    <p>{s['card_silence_desc']}</p>
   </a>
-  <a class="feature-card" href="methodology.html">
+  <a class="feature-card" href="{root_prefix}glossary.html">
+    <div class="icon">{ICON_GLOSSARY}</div>
+    <h3>{s['card_glossary_title']}{hebrew_tag}</h3>
+    <p>{s['card_glossary_desc']}</p>
+  </a>
+  <a class="feature-card" href="{root_prefix}methodology.html">
     <div class="icon">{ICON_METHOD}</div>
-    <h3>מתודולוגיה</h3>
-    <p>כל המקורות, כל החישובים, כל המגבלות הידועות</p>
+    <h3>{s['card_methodology_title']}{hebrew_tag}</h3>
+    <p>{s['card_methodology_desc']}</p>
   </a>
 </div>
 """
-    return shell("מדד הפסולת — נתוני פסולת ומיחזור לפי רשות מקומית", "index.html", body)
+    title = "מדד הפסולת — נתוני פסולת ומיחזור לפי רשות מקומית" if lang == "he" else "Israel Waste Index — waste and recycling data by local authority"
+    lang_toggle_href = "en/index.html" if lang == "he" else "../index.html"
+    return shell(title, "index.html", body, root_prefix=root_prefix, nav_prefix="", lang=lang, lang_toggle_href=lang_toggle_href)
 
 
-def build_ranking_page(data: dict) -> str:
+def build_ranking_page(data: dict, lang: str = "he") -> str:
+    s = STRINGS[lang]
     years = data["years"]
     latest_year = str(years[-1])
+    root_prefix = "" if lang == "he" else "../"
     body = f"""
-<h2>דירוג רשויות מקומיות</h2>
-<p class="lede">אחוז מיחזור, ק"ג פסולת לנפש ליום, ומגמה לעומת השנה הקודמת, לפי רשות מקומית. נתוני {latest_year} (או השנה האחרונה שדווחה).</p>
+<h2>{s['ranking_title']}</h2>
+<p class="lede">{s['ranking_lede'].format(year=latest_year)}</p>
 <div class="caveat">
-  רשויות עם "לא דיווח/ה" לא מסרו נתונים לשנה זו — ראו <a href="wall-of-silence.html">חומת השתיקה</a>. חלק מהרשויות חסר להן נתוני אוכלוסייה מדויקים (ראו מתודולוגיה).
+  {s['ranking_caveat'].replace('href="wall-of-silence.html"', f'href="{root_prefix}wall-of-silence.html"')}
 </div>
 <div class="controls">
-  <input type="search" id="search" placeholder="חיפוש רשות...">
+  <input type="search" id="search" placeholder="{s['search_placeholder']}">
   <select id="pop-filter">
-    <option value="">כל גדלי האוכלוסייה</option>
-    <option value="under_5k">עד 5,000</option>
-    <option value="5k_20k">5,000&ndash;20,000</option>
-    <option value="20k_50k">20,000&ndash;50,000</option>
-    <option value="50k_100k">50,000&ndash;100,000</option>
-    <option value="over_100k">מעל 100,000</option>
+    <option value="">{s['pop_filter_all']}</option>
+    <option value="under_5k">{s['pop_under_5k']}</option>
+    <option value="5k_20k">{s['pop_5k_20k']}</option>
+    <option value="20k_50k">{s['pop_20k_50k']}</option>
+    <option value="50k_100k">{s['pop_50k_100k']}</option>
+    <option value="over_100k">{s['pop_over_100k']}</option>
   </select>
   <span id="result-count" class="badge"></span>
 </div>
@@ -165,24 +410,27 @@ def build_ranking_page(data: dict) -> str:
 <table class="ranked" id="ranked-table">
   <thead>
     <tr>
-      <th data-key="name_he">רשות מקומית</th>
-      <th data-key="population">אוכלוסייה</th>
-      <th data-key="total_waste_tons">סך טונות</th>
-      <th data-key="pct_recycled" class="sorted">% מיחזור</th>
-      <th data-key="kg_per_capita_day">ק"ג לנפש ליום</th>
-      <th data-key="trend">מגמה</th>
-      <th data-key="data_year">שנת נתונים</th>
+      <th data-key="name">{s['th_authority']}</th>
+      <th data-key="population">{s['th_population']}</th>
+      <th data-key="total_waste_tons">{s['th_total_tons']}</th>
+      <th data-key="pct_recycled" class="sorted">{s['th_pct_recycled']}</th>
+      <th data-key="kg_per_capita_day">{s['th_kg_capita']}</th>
+      <th data-key="trend">{s['th_trend']}</th>
+      <th data-key="data_year">{s['th_data_year']}</th>
     </tr>
   </thead>
   <tbody></tbody>
 </table>
 </div>
 </div>
-<script src="vendor/chart.umd.min.js"></script>
-<script src="app.js?v={ASSET_VERSION}"></script>
-<script src="ranking.js?v={ASSET_VERSION}"></script>
+<script src="{root_prefix}vendor/chart.umd.min.js"></script>
+<script src="{root_prefix}app.js?v={ASSET_VERSION}"></script>
+<script>window.SITE_LANG = {json.dumps(lang)};</script>
+<script src="{root_prefix}ranking.js?v={ASSET_VERSION}"></script>
 """
-    return shell("מדד הפסולת — דירוג רשויות מקומיות", "ranking.html", body)
+    title = "מדד הפסולת — דירוג רשויות מקומיות" if lang == "he" else "Israel Waste Index — Local Authority Rankings"
+    lang_toggle_href = "en/ranking.html" if lang == "he" else "../ranking.html"
+    return shell(title, "ranking.html", body, root_prefix=root_prefix, nav_prefix="", lang=lang, lang_toggle_href=lang_toggle_href)
 
 
 def build_authority_page(authority: dict, years: list[str]) -> str:
@@ -194,10 +442,10 @@ def build_authority_page(authority: dict, years: list[str]) -> str:
 
     stat_tiles = f"""
 <div class="stat-row">
-  <div class="stat-tile"><div class="value">{fmt_pct(latest.get('pct_recycled'))}</div><div class="label">מיחזור והשבה ({ly or '—'})</div></div>
-  <div class="stat-tile"><div class="value">{fmt_num(latest.get('total_waste_tons'))}</div><div class="label">טונות פסולת ({ly or '—'})</div></div>
-  <div class="stat-tile"><div class="value">{latest.get('kg_per_capita_day') if latest.get('kg_per_capita_day') is not None else '—'}</div><div class="label">ק"ג לנפש ליום</div></div>
-  <div class="stat-tile"><div class="value">{fmt_num(pop)}</div><div class="label">אוכלוסייה (אמדן 2022)</div></div>
+  <div class="stat-tile">{ICON_RECYCLE}<div class="value">{fmt_pct(latest.get('pct_recycled'))}</div><div class="label">מיחזור והשבה ({ly or '—'})</div></div>
+  <div class="stat-tile">{ICON_TONS}<div class="value">{fmt_num(latest.get('total_waste_tons'))}</div><div class="label">טונות פסולת ({ly or '—'})</div></div>
+  <div class="stat-tile">{ICON_TONS}<div class="value">{latest.get('kg_per_capita_day') if latest.get('kg_per_capita_day') is not None else '—'}</div><div class="label">ק"ג לנפש ליום</div></div>
+  <div class="stat-tile">{ICON_POPULATION}<div class="value">{fmt_num(pop)}</div><div class="label">אוכלוסייה (אמדן 2022)</div></div>
 </div>
 """
     not_current = ""
@@ -212,7 +460,7 @@ def build_authority_page(authority: dict, years: list[str]) -> str:
 <p class="lede">{name_en}</p>
 {not_current}
 {stat_tiles}
-<h3>מגמה רב-שנתית: אחוז מיחזור לעומת יעד 2030 וממוצע ארצי</h3>
+<h3>{ICON_RECYCLE}מגמה רב-שנתית: אחוז מיחזור לעומת יעד 2030 וממוצע ארצי</h3>
 <div class="legend">
   <span><span class="swatch" style="background:var(--series-1)"></span>{name_he}</span>
   <span><span class="swatch" style="background:var(--text-muted)"></span>ממוצע ארצי</span>
@@ -236,45 +484,76 @@ def build_authority_page(authority: dict, years: list[str]) -> str:
     return shell(f"{name_he} — מדד הפסולת", "", body, root_prefix="../")
 
 
-def build_national_page(data: dict) -> str:
+def build_national_page(data: dict, lang: str = "he") -> str:
+    s = STRINGS[lang]
     years = data["years"]
     latest_year = str(years[-1])
     n = data["national"][latest_year]
     targets = data["targets_2030"]
+    root_prefix = "" if lang == "he" else "../"
+    hebrew_note = "" if lang == "he" else f' <span class="hebrew-only-tag">{s["hebrew_only"]}</span>'
+    reading_html = "\n".join(
+        f'<a class="reading-item" href="{item["url"]}" target="_blank" rel="noopener">'
+        f'<div class="reading-meta">{item["outlet"]} &middot; {item["date"]}{hebrew_note}</div>'
+        f'<h4>{item["title"]}</h4>'
+        f'<p>{item["desc"]}</p>'
+        f"</a>"
+        for item in FURTHER_READING
+    )
     body = f"""
-<h2>תמונת מצב ארצית</h2>
-<p class="lede">סך הכל פסולת, יחס מיחזור מול הטמנה, והפער ליעדי 2030, על בסיס השורה הרשמית של הלמ"ס (לא סכימה של נתוני הרשויות הבודדות — ראו מתודולוגיה).</p>
+<h2>{s['national_title']}</h2>
+<p class="lede">{s['national_lede']}</p>
 <div class="stat-row">
-  <div class="stat-tile"><div class="value">{fmt_num(n['total_waste_tons'])}</div><div class="label">סך טונות פסולת, {latest_year}</div></div>
-  <div class="stat-tile"><div class="value">{fmt_pct(n['pct_recycled'])}</div><div class="label">מיחזור והשבה</div></div>
-  <div class="stat-tile"><div class="value">{fmt_pct(n['pct_landfilled'])}</div><div class="label">הטמנה</div></div>
-  <div class="stat-tile"><div class="value">{targets['pct_landfilled']}%</div><div class="label">יעד הטמנה 2030</div></div>
+  <div class="stat-tile">{ICON_TONS}<div class="value">{fmt_num(n['total_waste_tons'])}</div><div class="label">{s['stat_total_tons'].format(year=latest_year)}</div></div>
+  <div class="stat-tile">{ICON_RECYCLE}<div class="value">{fmt_pct(n['pct_recycled'])}</div><div class="label">{s['stat_recycled']}</div></div>
+  <div class="stat-tile">{ICON_LANDFILL}<div class="value">{fmt_pct(n['pct_landfilled'])}</div><div class="label">{s['stat_landfilled']}</div></div>
+  <div class="stat-tile">{ICON_TARGET}<div class="value">{targets['pct_landfilled']}%</div><div class="label">{s['stat_target_landfill_2030']}</div></div>
 </div>
-<h3>מיחזור מול הטמנה, <bdi dir="ltr">2014&ndash;2024</bdi></h3>
+<h3>{s['chart_recycled_vs_landfilled']}</h3>
 <div class="legend">
-  <span><span class="swatch" style="background:var(--series-1)"></span>מיחזור והשבה</span>
-  <span><span class="swatch" style="background:var(--series-6)"></span>הטמנה</span>
+  <span><span class="swatch" style="background:var(--series-1)"></span>{s['legend_recycled']}</span>
+  <span><span class="swatch" style="background:var(--series-6)"></span>{s['legend_landfilled']}</span>
 </div>
 <div class="card"><div class="chart-box"><canvas id="national-chart"></canvas></div></div>
-<h3>הפער ליעד 2030</h3>
-<p class="lede">יעד הממשלה: 20% הטמנה / 54% מיחזור עד 2030. המצב הנוכחי ({latest_year}): {fmt_pct(n['pct_landfilled'])} הטמנה, {fmt_pct(n['pct_recycled'])} מיחזור.</p>
+<h3>{ICON_TARGET}{s['gap_title']}</h3>
+<p class="lede">{s['gap_lede'].format(year=latest_year, landfilled=fmt_pct(n['pct_landfilled']), recycled=fmt_pct(n['pct_recycled']))}</p>
 <div class="card"><div class="chart-box chart-box-short"><canvas id="gap-chart"></canvas></div></div>
 
-<h3>מה בעצם ממחזרים?</h3>
-<p class="lede">פירוט ארצי (לא לפי רשות) של החומרים המועברים למחזור והשבה. <strong>חומר אורגני</strong> &mdash; שיירי מזון וגזם המתאימים לקומפוסטציה &mdash; הוא הרכיב הגדול ביותר, ומהווה כ-41% מכלל החומרים הממוחזרים ב-2024.</p>
-<div class="caveat">פירוט זה זמין רק ברמה הארצית (מסך כל הרשויות יחד), ולא לפי רשות מקומית בודדת &mdash; הלמ"ס אינה מפרסמת פילוח חומרים ברמת הרשות.</div>
+<h3>{ICON_RECYCLE}{s['leaders_title']}</h3>
+<p class="lede">{s['leaders_lede'].format(year=latest_year)}</p>
+<div class="legend"><span><strong>{s['leaders_label']}</strong></span></div>
+<div class="card"><div class="chart-box chart-box-tall"><canvas id="leaders-chart"></canvas></div></div>
+<div class="legend"><span><strong>{s['laggards_label']}</strong></span></div>
+<div class="card"><div class="chart-box chart-box-tall"><canvas id="laggards-chart"></canvas></div></div>
+
+<h3>{ICON_POPULATION}{s['scatter_title']}</h3>
+<p class="lede">{s['scatter_lede'].format(year=latest_year)}</p>
+<div class="card"><div class="chart-box"><canvas id="scatter-chart"></canvas></div></div>
+
+<h3>{ICON_RECYCLE}{s['materials_title']}</h3>
+<p class="lede">{s['materials_lede']}</p>
+<div class="caveat">{s['materials_caveat']}</div>
 <div class="card"><div class="chart-box"><canvas id="materials-chart"></canvas></div></div>
 
-<h3>רקע כלכלי ומדיניות: מחיר ההטמנה</h3>
+<h3>{s['policy_title']}</h3>
 <p class="lede">
-היטל הטמנה הונהג בישראל ב-2007 כדי ליצור תמריץ שלילי להטמנה. עם זאת, לפי המשרד להגנת הסביבה, תעריף ההטמנה כיום (כולל ההיטל) עדיין נמוך משמעותית מהתעריף במדינות אירופה שבהן נאסרה הטמנה &mdash; מה שמותיר את ההטמנה זולה יחסית למתקני מיחזור והשבה. בשל כך, "קרן הניקיון" (הממומנת מהיטל ההטמנה) מסבסדת חלק ממתקני המיחזור וההשבה כדי לשמור על מחיר תחרותי מול הטמנה, אך לפי המשרד מנגנון זה לא יוכל להתרחב עם גידול מספר המתקנים העתידי.
+{s['policy_text']}
 </p>
-<div class="caveat">אין בידינו נתוני עלות מדויקים (ש"ח לטונה) עבור הטמנה מול מיחזור ברמת רשות או ברמה ארצית &mdash; הפירוט לעיל הוא תיאור מדיניות איכותני, לא נתון מספרי. מקור: <a href="https://fs.knesset.gov.il/25/Committees/25_cs_mmm_11061789.pdf" target="_blank" rel="noopener">דוח מרכז המחקר והמידע של הכנסת, ינואר 2026</a> (PDF).</div>
-<script src="vendor/chart.umd.min.js"></script>
-<script src="app.js?v={ASSET_VERSION}"></script>
-<script src="national.js?v={ASSET_VERSION}"></script>
+<div class="caveat">{s['policy_caveat']}</div>
+
+<h3>{s['further_reading_title']}</h3>
+<p class="lede">{s['further_reading_lede']}</p>
+<div class="reading-list">
+{reading_html}
+</div>
+<script src="{root_prefix}vendor/chart.umd.min.js"></script>
+<script src="{root_prefix}app.js?v={ASSET_VERSION}"></script>
+<script>window.SITE_LANG = {json.dumps(lang)};</script>
+<script src="{root_prefix}national.js?v={ASSET_VERSION}"></script>
 """
-    return shell("תמונת מצב ארצית — מדד הפסולת", "national.html", body)
+    title = "תמונת מצב ארצית — מדד הפסולת" if lang == "he" else "National Overview — Israel Waste Index"
+    lang_toggle_href = "en/national.html" if lang == "he" else "../national.html"
+    return shell(title, "national.html", body, root_prefix=root_prefix, nav_prefix="", lang=lang, lang_toggle_href=lang_toggle_href)
 
 
 def build_wall_of_silence_page(data: dict) -> str:
@@ -421,6 +700,7 @@ def main():
         data = json.load(f)
 
     os.makedirs(f"{OUT_DIR}/authority", exist_ok=True)
+    os.makedirs(f"{OUT_DIR}/en", exist_ok=True)
 
     with open(f"{OUT_DIR}/index.html", "w", encoding="utf-8") as f:
         f.write(build_home_page(data))
@@ -435,12 +715,20 @@ def main():
     with open(f"{OUT_DIR}/methodology.html", "w", encoding="utf-8") as f:
         f.write(build_methodology_page(data))
 
+    # English (Phase 1): home, ranking, national only.
+    with open(f"{OUT_DIR}/en/index.html", "w", encoding="utf-8") as f:
+        f.write(build_home_page(data, lang="en"))
+    with open(f"{OUT_DIR}/en/ranking.html", "w", encoding="utf-8") as f:
+        f.write(build_ranking_page(data, lang="en"))
+    with open(f"{OUT_DIR}/en/national.html", "w", encoding="utf-8") as f:
+        f.write(build_national_page(data, lang="en"))
+
     for authority in data["authorities"]:
         path = f"{OUT_DIR}/authority/{authority['slug']}.html"
         with open(path, "w", encoding="utf-8") as f:
             f.write(build_authority_page(authority, data["years"]))
 
-    print(f"generated index/ranking/national/wall-of-silence/methodology + {len(data['authorities'])} authority pages")
+    print(f"generated index/ranking/national/wall-of-silence/methodology + en/{{index,ranking,national}} + {len(data['authorities'])} authority pages")
 
 
 if __name__ == "__main__":

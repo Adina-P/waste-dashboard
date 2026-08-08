@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Israel Waste Index — Local Authority Rankings</title>
+<link rel="stylesheet" href="../style.css?v=716838ec">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <h1><a href="index.html">Israel Waste Index</a></h1>
+    <nav class="site-nav"><a href="index.html" class="">Home</a>
+<a href="ranking.html" class="active">Rankings</a>
+<a href="national.html" class="">National Overview</a></nav>
+    <div class="header-controls">
+      <a href="../ranking.html" class="lang-toggle">עברית</a>
+      <button id="theme-toggle" class="theme-toggle" type="button"><svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg><svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg></button>
+    </div>
+  </div>
+</header>
+<main class="wrap">
+
+<h2>Local Authority Rankings</h2>
+<p class="lede">% recycled, kg of waste per person per day, and year-over-year trend, by local authority. 2024 data (or the most recent year reported).</p>
+<div class="caveat">
+  Authorities marked "not reported" did not submit data for this year — see the <a href="../wall-of-silence.html">Wall of Silence</a>. Some authorities are missing exact population figures (see Methodology).
+</div>
+<div class="controls">
+  <input type="search" id="search" placeholder="Search authority...">
+  <select id="pop-filter">
+    <option value="">All population sizes</option>
+    <option value="under_5k">Under 5,000</option>
+    <option value="5k_20k">5,000–20,000</option>
+    <option value="20k_50k">20,000–50,000</option>
+    <option value="50k_100k">50,000–100,000</option>
+    <option value="over_100k">Over 100,000</option>
+  </select>
+  <span id="result-count" class="badge"></span>
+</div>
+<div class="card">
+<div class="table-scroll">
+<table class="ranked" id="ranked-table">
+  <thead>
+    <tr>
+      <th data-key="name">Local Authority</th>
+      <th data-key="population">Population</th>
+      <th data-key="total_waste_tons">Total Tons</th>
+      <th data-key="pct_recycled" class="sorted">% Recycled</th>
+      <th data-key="kg_per_capita_day">Kg/capita/day</th>
+      <th data-key="trend">Trend</th>
+      <th data-key="data_year">Data Year</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+</div>
+</div>
+<script src="../vendor/chart.umd.min.js"></script>
+<script src="../app.js?v=716838ec"></script>
+<script>window.SITE_LANG = "en";</script>
+<script src="../ranking.js?v=716838ec"></script>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    Data from Israel's Central Bureau of Statistics and data.gov.il ·
+    <a href="../methodology.html">Sources & Methodology</a>
+  </div>
+</footer>
+<script src="../theme.js?v=716838ec"></script>
+<script data-goatcounter="https://adinap.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

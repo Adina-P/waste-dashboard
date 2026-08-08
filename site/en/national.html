@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>National Overview — Israel Waste Index</title>
+<link rel="stylesheet" href="../style.css?v=716838ec">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <h1><a href="index.html">Israel Waste Index</a></h1>
+    <nav class="site-nav"><a href="index.html" class="">Home</a>
+<a href="ranking.html" class="">Rankings</a>
+<a href="national.html" class="active">National Overview</a></nav>
+    <div class="header-controls">
+      <a href="../national.html" class="lang-toggle">עברית</a>
+      <button id="theme-toggle" class="theme-toggle" type="button"><svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg><svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg></button>
+    </div>
+  </div>
+</header>
+<main class="wrap">
+
+<h2>National Overview</h2>
+<p class="lede">Total waste, recycling vs. landfilling, and the gap to the 2030 targets, based on CBS's own official total (not a sum of individual authorities — see Methodology).</p>
+<div class="stat-row">
+  <div class="stat-tile"><svg class="icon-sm" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5 9 5 9-5Z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg><div class="value">6,382,970</div><div class="label">Total waste tons, 2024</div></div>
+  <div class="stat-tile"><svg class="icon-sm" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg><div class="value">24.4%</div><div class="label">Recycling & recovery</div></div>
+  <div class="stat-tile"><svg class="icon-sm" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg><div class="value">75.6%</div><div class="label">Landfilling</div></div>
+  <div class="stat-tile"><svg class="icon-sm" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg><div class="value">20%</div><div class="label">2030 landfill target</div></div>
+</div>
+<h3>Recycling vs. landfilling, <bdi dir="ltr">2014&ndash;2024</bdi></h3>
+<div class="legend">
+  <span><span class="swatch" style="background:var(--series-1)"></span>Recycling & recovery</span>
+  <span><span class="swatch" style="background:var(--series-6)"></span>Landfilling</span>
+</div>
+<div class="card"><div class="chart-box"><canvas id="national-chart"></canvas></div></div>
+<h3><svg class="icon-sm" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg>The gap to the 2030 target</h3>
+<p class="lede">Government target: 20% landfilling / 54% recycling by 2030. Current state (2024): 75.6% landfilling, 24.4% recycling.</p>
+<div class="card"><div class="chart-box chart-box-short"><canvas id="gap-chart"></canvas></div></div>
+
+<h3><svg class="icon-sm" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>Leaders and laggards</h3>
+<p class="lede">The ten authorities with the highest and lowest recycling rates in 2024, among those that reported data.</p>
+<div class="legend"><span><strong>Best recyclers</strong></span></div>
+<div class="card"><div class="chart-box chart-box-tall"><canvas id="leaders-chart"></canvas></div></div>
+<div class="legend"><span><strong>Worst recyclers</strong></span></div>
+<div class="card"><div class="chart-box chart-box-tall"><canvas id="laggards-chart"></canvas></div></div>
+
+<h3><svg class="icon-sm" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><path d="M2 21v-1a6 6 0 0 1 6-6h2a6 6 0 0 1 6 6v1"/><circle cx="17" cy="8" r="2.5"/><path d="M23 21v-1a5 5 0 0 0-4-4.9"/></svg>Population vs. recycling rate</h3>
+<p class="lede">Do bigger authorities tend to recycle more? Each point is one local authority, 2024.</p>
+<div class="card"><div class="chart-box"><canvas id="scatter-chart"></canvas></div></div>
+
+<h3><svg class="icon-sm" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>What actually gets recycled?</h3>
+<p class="lede">National breakdown (not by authority) of materials transferred to recycling and recovery. <strong>Organic material</strong> — food scraps and yard waste suitable for composting — is the largest single component, making up about 41% of everything recycled in 2024.</p>
+<div class="caveat">This breakdown is only available at the national level (all authorities combined), not per individual authority — CBS does not publish a material breakdown at the authority level.</div>
+<div class="card"><div class="chart-box"><canvas id="materials-chart"></canvas></div></div>
+
+<h3>Economic & policy background: the price of landfilling</h3>
+<p class="lede">
+A landfill levy was introduced in Israel in 2007 to create a financial disincentive for landfilling. Even so, according to the Ministry of Environmental Protection, today’s landfill tariff (including the levy) is still significantly lower than in European countries that have banned landfilling — which keeps landfilling relatively cheap compared to recycling and recovery facilities. As a result, the "Cleanliness Fund" (funded by the landfill levy) subsidizes some recycling and recovery facilities to keep them price-competitive with landfilling, though the Ministry says this mechanism won’t be able to scale as more facilities come online.
+</p>
+<div class="caveat">We do not have exact cost data (NIS per ton) for landfilling vs. recycling at the authority or national level — the description above is a qualitative policy summary, not a numeric figure. Source: <a href="https://fs.knesset.gov.il/25/Committees/25_cs_mmm_11061789.pdf" target="_blank" rel="noopener">Knesset Research and Information Center report, January 2026</a> (PDF).</div>
+
+<h3>Further Reading</h3>
+<p class="lede">Background coverage from the Israeli press on the waste crisis (Hebrew).</p>
+<div class="reading-list">
+<a class="reading-item" href="https://www.zavit.org.il/%D7%AA%D7%97%D7%96%D7%99%D7%AA-%D7%9E%D7%93%D7%90%D7%99%D7%92%D7%94-%D7%A2%D7%93-2040-%D7%94%D7%99%D7%A7%D7%A3-%D7%96%D7%99%D7%94%D7%95%D7%9D-%D7%94%D7%A4%D7%9C%D7%A1%D7%98%D7%99%D7%A7-%D7%99%D7%A9/" target="_blank" rel="noopener"><div class="reading-meta">זווית &middot; מאי 2026 <span class="hebrew-only-tag">Hebrew only</span></div><h4>תחזית מדאיגה עד 2040: היקף זיהום הפלסטיק צפוי להכפיל את עצמו</h4><p>סקירה של דוח Pew על זיהום פלסטיק עולמי, עם התייחסות למדיניות מיחזור בישראל.</p></a>
+<a class="reading-item" href="https://www.calcalist.co.il/local_news/article/s1ruftx8fl" target="_blank" rel="noopener"><div class="reading-meta">כלכליסט &middot; אוגוסט 2026 <span class="hebrew-only-tag">Hebrew only</span></div><h4>ישראל בדרך למשבר פסולת לאומי: האם האשפה תיערם ברחובות?</h4><p>דעה מאת ראובן לדיאנסקי, יו"ר איגוד ערים חבל דן (חיריה) וסגן ראש עיריית תל אביב-יפו, על משבר קיבולת ההטמנה.</p></a>
+<a class="reading-item" href="https://infospot.co.il/n/state_comptroller_municipal_waste_report" target="_blank" rel="noopener"><div class="reading-meta">infospot &middot; יולי 2025 <span class="hebrew-only-tag">Hebrew only</span></div><h4>הנתונים של נפח ההטמנה נחשפים. הרפורמה בענף תקועה</h4><p>סיכום דוח מעקב של מבקר המדינה על משבר קיבולת ההטמנה ותקיעת רפורמת משק הפסולת.</p></a>
+<a class="reading-item" href="https://www.neaman.org.il/the-waste-management-crisis-a-national-project/" target="_blank" rel="noopener"><div class="reading-meta">מכון שמואל נאמן &middot; יוני 2023 <span class="hebrew-only-tag">Hebrew only</span></div><h4>משבר משק הפסולת: פרויקט לאומי</h4><p>מסמך המלצות מדיניות: להכריז על משק הפסולת כפרויקט לאומי, להקים רשות ייעודית, ולתכנן לטווח של 20 שנה ומעלה.</p></a>
+<a class="reading-item" href="https://shakuf.co.il/63559" target="_blank" rel="noopener"><div class="reading-meta">שקוף &middot; יוני 2026 <span class="hebrew-only-tag">Hebrew only</span></div><h4>שלושה צעדים להתחיל לתקן את משבר הפסולת בישראל</h4><p>מאת מרב אבדי, מנהלת רגולציה באדם טבע ודין: קיבוע מתאן ממטמנות, הפרדת פסולת אורגנית במגזר המוסדי, ואכיפה נגד שריפות פסולת בלתי חוקיות.</p></a>
+</div>
+<script src="../vendor/chart.umd.min.js"></script>
+<script src="../app.js?v=716838ec"></script>
+<script>window.SITE_LANG = "en";</script>
+<script src="../national.js?v=716838ec"></script>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    Data from Israel's Central Bureau of Statistics and data.gov.il ·
+    <a href="../methodology.html">Sources & Methodology</a>
+  </div>
+</footer>
+<script src="../theme.js?v=716838ec"></script>
+<script data-goatcounter="https://adinap.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
