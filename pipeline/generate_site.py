@@ -13,14 +13,23 @@ DATA_PATH = "site/data/waste.json"
 OUT_DIR = "site"
 LAST_YEAR_FALLBACK_DEPTH = 3  # how many years back to look for a reported value
 
-with open(f"{OUT_DIR}/style.css", "rb") as _f:
-    ASSET_VERSION = hashlib.sha256(_f.read()).hexdigest()[:8]
+def _compute_asset_version() -> str:
+    h = hashlib.sha256()
+    for name in sorted(os.listdir(OUT_DIR)):
+        if name.endswith((".css", ".js")):
+            with open(f"{OUT_DIR}/{name}", "rb") as f:
+                h.update(f.read())
+    return h.hexdigest()[:8]
+
+
+ASSET_VERSION = _compute_asset_version()
 
 NAV_ITEMS = [
     ("index.html", "בית"),
     ("ranking.html", "דירוג רשויות"),
     ("national.html", "תמונת מצב ארצית"),
     ("wall-of-silence.html", "חומת השתיקה"),
+    ("glossary.html", "מילון מונחים"),
     ("methodology.html", "מתודולוגיה"),
 ]
 
@@ -65,7 +74,7 @@ def shell(title: str, active: str, body: str, root_prefix: str = "", extra_head:
     <a href="{root_prefix}methodology.html">מקורות ומתודולוגיה</a>
   </div>
 </footer>
-<script src="{root_prefix}theme.js"></script>
+<script src="{root_prefix}theme.js?v={ASSET_VERSION}"></script>
 </body>
 </html>
 """
@@ -170,8 +179,8 @@ def build_ranking_page(data: dict) -> str:
 </div>
 </div>
 <script src="vendor/chart.umd.min.js"></script>
-<script src="app.js"></script>
-<script src="ranking.js"></script>
+<script src="app.js?v={ASSET_VERSION}"></script>
+<script src="ranking.js?v={ASSET_VERSION}"></script>
 """
     return shell("מדד הפסולת — דירוג רשויות מקומיות", "ranking.html", body)
 
@@ -195,7 +204,7 @@ def build_authority_page(authority: dict, years: list[str]) -> str:
     if ly and ly != str(years[-1]):
         not_current = f'<div class="caveat">הרשות לא דיווחה נתונים החל משנת {int(ly)+1} — מוצגים נתוני {ly}, הנתונים העדכניים ביותר הזמינים.</div>'
     elif not ly:
-        not_current = '<div class="caveat">לרשות זו אין נתוני מיחזור מדווחים בכל השנים הזמינות (2014&ndash;2024).</div>'
+        not_current = '<div class="caveat">לרשות זו אין נתוני מיחזור מדווחים בכל השנים הזמינות (<bdi dir="ltr">2014&ndash;2024</bdi>).</div>'
 
     body = f"""
 <a class="back-link" href="ranking.html">&rarr; חזרה לדירוג</a>
@@ -220,9 +229,9 @@ def build_authority_page(authority: dict, years: list[str]) -> str:
 </div>
 </div>
 <script src="../vendor/chart.umd.min.js"></script>
-<script src="../app.js"></script>
+<script src="../app.js?v={ASSET_VERSION}"></script>
 <script>window.AUTHORITY_SLUG = {json.dumps(authority['slug'])};</script>
-<script src="../authority.js"></script>
+<script src="../authority.js?v={ASSET_VERSION}"></script>
 """
     return shell(f"{name_he} — מדד הפסולת", "", body, root_prefix="../")
 
@@ -241,7 +250,7 @@ def build_national_page(data: dict) -> str:
   <div class="stat-tile"><div class="value">{fmt_pct(n['pct_landfilled'])}</div><div class="label">הטמנה</div></div>
   <div class="stat-tile"><div class="value">{targets['pct_landfilled']}%</div><div class="label">יעד הטמנה 2030</div></div>
 </div>
-<h3>מיחזור מול הטמנה, 2014&ndash;2024</h3>
+<h3>מיחזור מול הטמנה, <bdi dir="ltr">2014&ndash;2024</bdi></h3>
 <div class="legend">
   <span><span class="swatch" style="background:var(--series-1)"></span>מיחזור והשבה</span>
   <span><span class="swatch" style="background:var(--series-6)"></span>הטמנה</span>
@@ -262,8 +271,8 @@ def build_national_page(data: dict) -> str:
 </p>
 <div class="caveat">אין בידינו נתוני עלות מדויקים (ש"ח לטונה) עבור הטמנה מול מיחזור ברמת רשות או ברמה ארצית &mdash; הפירוט לעיל הוא תיאור מדיניות איכותני, לא נתון מספרי. מקור: <a href="https://fs.knesset.gov.il/25/Committees/25_cs_mmm_11061789.pdf" target="_blank" rel="noopener">דוח מרכז המחקר והמידע של הכנסת, ינואר 2026</a> (PDF).</div>
 <script src="vendor/chart.umd.min.js"></script>
-<script src="app.js"></script>
-<script src="national.js"></script>
+<script src="app.js?v={ASSET_VERSION}"></script>
+<script src="national.js?v={ASSET_VERSION}"></script>
 """
     return shell("תמונת מצב ארצית — מדד הפסולת", "national.html", body)
 
@@ -275,25 +284,86 @@ def build_wall_of_silence_page(data: dict) -> str:
         a for a in data["authorities"] if not a["years"].get(latest_year, {}).get("reported")
     ]
     non_reporting.sort(key=lambda a: a["name_he"])
-    rows = "\n".join(
-        f'<tr><td class="name"><a href="authority/{a["slug"]}.html">{a["name_he"]}</a></td>'
-        f'<td>{fmt_num(a["population"])}</td>'
-        f'<td>{latest_reported_year(a, years) or "מעולם לא"}</td></tr>'
-        for a in non_reporting
-    )
+    rows = []
+    for a in non_reporting:
+        ly = latest_reported_year(a, years)
+        pop_sort = a["population"] if a["population"] is not None else -1
+        year_sort = int(ly) if ly else 0
+        rows.append(
+            f'<tr><td class="name" data-sort="{a["name_he"]}"><a href="authority/{a["slug"]}.html">{a["name_he"]}</a></td>'
+            f'<td data-sort="{pop_sort}">{fmt_num(a["population"])}</td>'
+            f'<td data-sort="{year_sort}">{ly or "מעולם לא"}</td></tr>'
+        )
+    rows_html = "\n".join(rows)
     body = f"""
 <h2>חומת השתיקה</h2>
 <p class="lede">{len(non_reporting)} מתוך {len(data['authorities'])} רשויות מקומיות לא דיווחו נתוני פסולת ומיחזור ללמ"ס עבור {latest_year}. אי-דיווח הוא ממצא בפני עצמו.</p>
 <div class="card">
 <div class="table-scroll">
-<table class="ranked">
-<thead><tr><th>רשות מקומית</th><th>אוכלוסייה</th><th>דיווח אחרון</th></tr></thead>
-<tbody>{rows}</tbody>
+<table class="ranked" id="wos-table">
+<thead><tr><th data-key="name" class="sorted asc">רשות מקומית</th><th data-key="population">אוכלוסייה</th><th data-key="year">דיווח אחרון</th></tr></thead>
+<tbody>{rows_html}</tbody>
 </table>
 </div>
 </div>
+<script src="app.js?v={ASSET_VERSION}"></script>
+<script>document.addEventListener('DOMContentLoaded', () => makeSortableTable(document.getElementById('wos-table')));</script>
 """
     return shell("חומת השתיקה — מדד הפסולת", "wall-of-silence.html", body)
+
+
+def build_glossary_page(data: dict) -> str:
+    body = """
+<h2>מילון מונחים</h2>
+<p class="lede">איך פסולת מטופלת בישראל, מה כל שיטה אומרת לסביבה ולעלות, ואיך זה נראה במדינות אחרות.</p>
+
+<h3>שיטות הטיפול בפסולת</h3>
+<dl class="methodology-source">
+  <dt>הפרדה במקור</dt>
+  <dd>הפרדת הפסולת לזרמים שונים (אורגני, יבש למיחזור, שארי) כבר בבית או בעסק, לפני האיסוף. ברפורמה הישראלית: פח חום לאורגני, פח כתום למיחזור יבש, פח ירוק לשארי. הפרדה במקור היא התנאי ההכרחי לקומפוסט איכותי ולמיחזור יעיל &mdash; פסולת שמגיעה מעורבת קשה הרבה יותר למיין.</dd>
+
+  <dt>תחנת מעבר</dt>
+  <dd>מתקן ביניים שבו פסולת שנאספה מרוכזת, ולעיתים ממוינת חלקית, לפני שהיא ממשיכה למיחזור, להשבה או להטמנה.</dd>
+
+  <dt>מיחזור</dt>
+  <dd>עיבוד חוזר של חומרים &mdash; נייר, קרטון, פלסטיק, זכוכית, מתכת &mdash; לחומר גלם לשימוש חוזר. חוסך משאבים טבעיים וכרייה/ייצור חדש.</dd>
+
+  <dt>קומפוסטציה / טיפול בפסולת אורגנית</dt>
+  <dd>עיבוד שיירי מזון וגזם לקומפוסט. מחזיר חומרים אורגניים לקרקע במקום לקבור אותם &mdash; וכך מונע את פליטת המתאן שנוצרת כשחומר אורגני מתפרק בהטמנה ללא חמצן. לפי נתוני האתר, זהו הרכיב הגדול ביותר מבין כל מה שמועבר למיחזור והשבה בישראל.</dd>
+
+  <dt>השבת אנרגיה (השבה תרמית)</dt>
+  <dd>שריפת פסולת (או דלק שמופק ממנה) לייצור אנרגיה. בישראל מתבצע כיום בעיקר בשיתוף בין פארק המיחזור חיריה למפעל המלט נשר, שמשתמש בדלק המופק מפסולת. מדורג בהיררכיה מתחת למיחזור אך מעל הטמנה.</dd>
+
+  <dt>הטמנה</dt>
+  <dd>קבורת פסולת בקרקע. השיטה הזולה ביותר כיום בישראל, אך הבעייתית ביותר סביבתית: פסולת אורגנית שנקברת פולטת מתאן &mdash; גז חממה חזק בהרבה מפחמן דו-חמצני &mdash; ויש סיכון לזיהום מי תהום מתשטיפים. גם תופסת שטח קרקע שלא ניתן להשתמש בו לדברים אחרים.</dd>
+
+  <dt>היטל הטמנה</dt>
+  <dd>תשלום שגובה המדינה על כל טונת פסולת שמוטמנת, שהונהג ב-2007 כדי להפוך הטמנה ליקרה יותר ולעודד חלופות. עדיין, לפי המשרד להגנת הסביבה, ההטמנה בישראל זולה משמעותית מאשר במדינות אירופה שאסרו עליה &mdash; ראו הרחבה ב<a href="national.html">תמונת מצב ארצית</a>.</dd>
+</dl>
+
+<h3>היררכיית הטיפול בפסולת</h3>
+<p class="lede">האיחוד האירופי (וגם מדיניות משרד הגנת הסביבה בישראל) מדרגים שיטות טיפול בפסולת לפי העדפה סביבתית, מהטוב ביותר לגרוע ביותר:</p>
+<ol>
+  <li><strong>מניעה וצמצום</strong> &mdash; לא ליצור את הפסולת מלכתחילה</li>
+  <li><strong>הכנה לשימוש חוזר ומיחזור</strong> &mdash; הפיכת הפסולת לחומר גלם</li>
+  <li><strong>השבה</strong> &mdash; כולל השבת אנרגיה</li>
+  <li><strong>הטמנה</strong> &mdash; מוצא אחרון</li>
+</ol>
+<p class="lede">מקור: מרכז המחקר והמידע של הכנסת, <a href="https://fs.knesset.gov.il/25/Committees/25_cs_mmm_11061789.pdf" target="_blank" rel="noopener">ינואר 2026</a> (PDF), בהתבסס על פרסומי האיחוד האירופי.</p>
+
+<h3>עלות לחברה</h3>
+<p class="lede">מעבר לעלות הכספית הישירה של איסוף ופינוי, לכל שיטת טיפול יש עלות סביבתית וחברתית עקיפה: פליטות מתאן ופגיעה באיכות האוויר מהטמנה, סיכון לזיהום קרקע ומי תהום, עומס תחבורתי משינוע פסולת למרחקים, ואובדן קרקע שאפשר היה לייעד לשימושים אחרים.</p>
+<div class="caveat">כפי שמצוין ב<a href="national.html">תמונת מצב ארצית</a>: אין בידינו נתוני עלות מדויקים (ש"ח לטונה) ברמת רשות או ברמה ארצית להשוואה ישירה בין הטמנה למיחזור. מה שכן ידוע: תעריף ההטמנה בישראל, כולל ההיטל, נמוך משמעותית מהתעריף במדינות אירופיות שאסרו הטמנה &mdash; מה שמייקר יחסית את החלופות הידידותיות יותר לסביבה.</div>
+
+<h3>איך זה נראה בעולם</h3>
+<p class="lede">ישראל מטמינה כ-76% מהפסולת העירונית שלה (2024) &mdash; שיעור גבוה משמעותית מהממוצע במדינות המפותחות. ישראל מדורגת 20 מתוך 22 מדינות ה-OECD שמדווחות נתוני מיחזור (25.3% ב-2023), לעומת ממוצע OECD של כ-57%. מדינות כמו גרמניה, שוודיה ואוסטריה שואפות (ולעיתים מגיעות) לשיעורי הטמנה קרובים לאפס, בעיקר באמצעות שילוב של הפרדה במקור נרחבת, השבת אנרגיה ומיחזור.</p>
+<p class="lede">למי שרוצה להעמיק בהשוואה בינלאומית:</p>
+<ul>
+  <li><a href="https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Municipal_waste_statistics" target="_blank" rel="noopener">Eurostat &mdash; Municipal waste statistics</a></li>
+  <li><a href="https://data.oecd.org/waste/municipal-waste.htm" target="_blank" rel="noopener">OECD &mdash; Municipal waste data</a></li>
+</ul>
+"""
+    return shell("מילון מונחים — מדד הפסולת", "glossary.html", body)
 
 
 def build_methodology_page(data: dict) -> str:
@@ -304,7 +374,7 @@ def build_methodology_page(data: dict) -> str:
 
 <h3>מקורות נתונים</h3>
 <dl class="methodology-source">
-  <dt>פסולת לפי רשות מקומית (2014&ndash;2024)</dt>
+  <dt>פסולת לפי רשות מקומית (<bdi dir="ltr">2014&ndash;2024</bdi>)</dt>
   <dd>הלשכה המרכזית לסטטיסטיקה (למ"ס), "פסולת ביתית ומסחרית שנאספה, לפי אופן טיפול ורשות מקומית". פורסם: 4.11.2025.</dd>
   <dd><a href="https://www.cbs.gov.il/he/publications/Pages/2019/פסולת-שנאספה-ברשויות-המקומיות-2014-2017.aspx" target="_blank" rel="noopener">cbs.gov.il</a></dd>
 
@@ -331,7 +401,7 @@ def build_methodology_page(data: dict) -> str:
 
 <h3>שיעור הדיווח של הרשויות</h3>
 <p class="lede">"רשות שלא דיווחה" באתר זה = רשות שהלמ"ס לא פרסמה עבורה נתון מספרי בסקר פסולת ומחזור ברשויות המקומיות לאותה שנה. בפועל, 226&ndash;253 מתוך 255&ndash;257 רשויות מדווחות נתוני פסולת כלשהם בכל שנה בין 2014 ל-2024 (18 מתוך 257 לא דיווחו ב-2024) &mdash; שיעור דיווח גבוה בהרבה ממה שנפוץ בשיח הציבורי.</p>
-<div class="caveat">תיקון: טיוטה מוקדמת של מסמך הפרויקט ציטטה נתון של "כ-120&ndash;125 מתוך כ-255 רשויות מדווחות", שמקורו התברר כדוח מרכז המחקר והמידע של הכנסת <strong>מיוני 2008</strong> (<a href="https://fs.knesset.gov.il/globaldocs/MMM/034c6b58-e9f7-e411-80c8-00155d010977/2_034c6b58-e9f7-e411-80c8-00155d010977_11_6689.pdf" target="_blank" rel="noopener">"פסולת ביתית בישראל"</a>) &mdash; דוח העוסק בעמידה בדרישת דיווח רגולטורית שונה למשרד להגנת הסביבה (לא בסקר הלמ"ס שעליו מבוסס אתר זה), ומתאר מצב לפני כ-18 שנה. שני הנתונים נכונים כל אחד להקשרו, אך אינם ניתנים להשוואה ישירה. פירוט מלא ב-<code>data/CONFLICTS.md</code> במאגר הקוד.</div>
+<div class="caveat">ייתכן שנתקלתם בנתון של "כ-120 רשויות בלבד מדווחות", החוזר מדי פעם בשיח הציבורי. מקורו בדוח מרכז המחקר והמידע של הכנסת <strong>מיוני 2008</strong> (<a href="https://fs.knesset.gov.il/globaldocs/MMM/034c6b58-e9f7-e411-80c8-00155d010977/2_034c6b58-e9f7-e411-80c8-00155d010977_11_6689.pdf" target="_blank" rel="noopener">"פסולת ביתית בישראל"</a>) &mdash; דוח העוסק בעמידה בדרישת דיווח רגולטורית שונה למשרד להגנת הסביבה (לא בסקר הלמ"ס שעליו מבוסס אתר זה), ומתאר מצב לפני כ-18 שנה. שני הנתונים נכונים כל אחד להקשרו, אך אינם ניתנים להשוואה ישירה. פירוט מלא ב-<code>data/CONFLICTS.md</code> במאגר הקוד.</div>
 
 <h3>מגבלות ידועות</h3>
 <div class="caveat"><strong>סך הפסולת הארצי.</strong> סכימה של נתוני כל הרשויות הבודדות נמוכה בכ-7&ndash;8% מהשורה הרשמית שמפרסמת הלמ"ס עצמה, מכיוון שהלמ"ס כוללת בסך הארצי הערכה לרשויות שאינן מדווחות בנפרד. לכן עמוד "תמונת מצב ארצית" משתמש בשורת הסך הרשמית של הלמ"ס, ולא בסכימה של נתוני הרשויות.</div>
@@ -360,6 +430,8 @@ def main():
         f.write(build_national_page(data))
     with open(f"{OUT_DIR}/wall-of-silence.html", "w", encoding="utf-8") as f:
         f.write(build_wall_of_silence_page(data))
+    with open(f"{OUT_DIR}/glossary.html", "w", encoding="utf-8") as f:
+        f.write(build_glossary_page(data))
     with open(f"{OUT_DIR}/methodology.html", "w", encoding="utf-8") as f:
         f.write(build_methodology_page(data))
 

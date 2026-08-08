@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>חומת השתיקה — מדד הפסולת</title>
-<link rel="stylesheet" href="style.css?v=ef198f69">
+<link rel="stylesheet" href="style.css?v=bee479e0">
 <script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 
 </head>
@@ -16,6 +16,7 @@
 <a href="ranking.html" class="">דירוג רשויות</a>
 <a href="national.html" class="">תמונת מצב ארצית</a>
 <a href="wall-of-silence.html" class="active">חומת השתיקה</a>
+<a href="glossary.html" class="">מילון מונחים</a>
 <a href="methodology.html" class="">מתודולוגיה</a></nav>
     <button id="theme-toggle" class="theme-toggle" type="button"><svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg><svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg></button>
   </div>
@@ -26,30 +27,32 @@
 <p class="lede">19 מתוך 258 רשויות מקומיות לא דיווחו נתוני פסולת ומיחזור ללמ"ס עבור 2024. אי-דיווח הוא ממצא בפני עצמו.</p>
 <div class="card">
 <div class="table-scroll">
-<table class="ranked">
-<thead><tr><th>רשות מקומית</th><th>אוכלוסייה</th><th>דיווח אחרון</th></tr></thead>
-<tbody><tr><td class="name"><a href="authority/abu-snan.html">אבו סנאן</a></td><td>13,895</td><td>2023</td></tr>
-<tr><td class="name"><a href="authority/ariel.html">אריאל</a></td><td>21,428</td><td>2022</td></tr>
-<tr><td class="name"><a href="authority/bustan-el-marj.html">בוסתן אל-מרג'</a></td><td>8,111</td><td>2021</td></tr>
-<tr><td class="name"><a href="authority/bet-shemesh.html">בית שמש</a></td><td>145,554</td><td>2023</td></tr>
-<tr><td class="name"><a href="authority/bene-ayish.html">בני עי"ש</a></td><td>6,740</td><td>2023</td></tr>
-<tr><td class="name"><a href="authority/jisr-az-zarqa.html">ג'סר א-זרקא</a></td><td>15,418</td><td>2021</td></tr>
-<tr><td class="name"><a href="authority/hura.html">חורה</a></td><td>20,671</td><td>2023</td></tr>
-<tr><td class="name"><a href="authority/kaokab-abu-al-hija.html">כאוכב אבו אל-היג'א</a></td><td>3,984</td><td>2023</td></tr>
-<tr><td class="name"><a href="authority/lev-hasharon.html">לב השרון</a></td><td>23,813</td><td>2023</td></tr>
-<tr><td class="name"><a href="authority/metar.html">מיתר</a></td><td>11,207</td><td>2020</td></tr>
-<tr><td class="name"><a href="authority/ma-ale-iron.html">מעלה עירון</a></td><td>14,865</td><td>2023</td></tr>
-<tr><td class="name"><a href="authority/nazerat-illit.html">נוף הגליל</a></td><td>43,479</td><td>2023</td></tr>
-<tr><td class="name"><a href="authority/nahal-soreq.html">נחל שורק</a></td><td>10,204</td><td>2023</td></tr>
-<tr><td class="name"><a href="authority/nazareth.html">נצרת</a></td><td>77,295</td><td>2022</td></tr>
-<tr><td class="name"><a href="authority/isifya.html">עספיא</a></td><td>13,060</td><td>2023</td></tr>
-<tr><td class="name"><a href="authority/fureidis.html">פוריידיס</a></td><td>13,108</td><td>2022</td></tr>
-<tr><td class="name"><a href="authority/rishon-leziyyon.html">ראשון לציון</a></td><td>252,413</td><td>2023</td></tr>
-<tr><td class="name"><a href="authority/reine.html">ריינה</a></td><td>17,046</td><td>2023</td></tr>
-<tr><td class="name"><a href="authority/shefar-am.html">שפרעם</a></td><td>42,713</td><td>2023</td></tr></tbody>
+<table class="ranked" id="wos-table">
+<thead><tr><th data-key="name" class="sorted asc">רשות מקומית</th><th data-key="population">אוכלוסייה</th><th data-key="year">דיווח אחרון</th></tr></thead>
+<tbody><tr><td class="name" data-sort="אבו סנאן"><a href="authority/abu-snan.html">אבו סנאן</a></td><td data-sort="13895">13,895</td><td data-sort="2023">2023</td></tr>
+<tr><td class="name" data-sort="אריאל"><a href="authority/ariel.html">אריאל</a></td><td data-sort="21428">21,428</td><td data-sort="2022">2022</td></tr>
+<tr><td class="name" data-sort="בוסתן אל-מרג'"><a href="authority/bustan-el-marj.html">בוסתן אל-מרג'</a></td><td data-sort="8111">8,111</td><td data-sort="2021">2021</td></tr>
+<tr><td class="name" data-sort="בית שמש"><a href="authority/bet-shemesh.html">בית שמש</a></td><td data-sort="145554">145,554</td><td data-sort="2023">2023</td></tr>
+<tr><td class="name" data-sort="בני עי"ש"><a href="authority/bene-ayish.html">בני עי"ש</a></td><td data-sort="6740">6,740</td><td data-sort="2023">2023</td></tr>
+<tr><td class="name" data-sort="ג'סר א-זרקא"><a href="authority/jisr-az-zarqa.html">ג'סר א-זרקא</a></td><td data-sort="15418">15,418</td><td data-sort="2021">2021</td></tr>
+<tr><td class="name" data-sort="חורה"><a href="authority/hura.html">חורה</a></td><td data-sort="20671">20,671</td><td data-sort="2023">2023</td></tr>
+<tr><td class="name" data-sort="כאוכב אבו אל-היג'א"><a href="authority/kaokab-abu-al-hija.html">כאוכב אבו אל-היג'א</a></td><td data-sort="3984">3,984</td><td data-sort="2023">2023</td></tr>
+<tr><td class="name" data-sort="לב השרון"><a href="authority/lev-hasharon.html">לב השרון</a></td><td data-sort="23813">23,813</td><td data-sort="2023">2023</td></tr>
+<tr><td class="name" data-sort="מיתר"><a href="authority/metar.html">מיתר</a></td><td data-sort="11207">11,207</td><td data-sort="2020">2020</td></tr>
+<tr><td class="name" data-sort="מעלה עירון"><a href="authority/ma-ale-iron.html">מעלה עירון</a></td><td data-sort="14865">14,865</td><td data-sort="2023">2023</td></tr>
+<tr><td class="name" data-sort="נוף הגליל"><a href="authority/nazerat-illit.html">נוף הגליל</a></td><td data-sort="43479">43,479</td><td data-sort="2023">2023</td></tr>
+<tr><td class="name" data-sort="נחל שורק"><a href="authority/nahal-soreq.html">נחל שורק</a></td><td data-sort="10204">10,204</td><td data-sort="2023">2023</td></tr>
+<tr><td class="name" data-sort="נצרת"><a href="authority/nazareth.html">נצרת</a></td><td data-sort="77295">77,295</td><td data-sort="2022">2022</td></tr>
+<tr><td class="name" data-sort="עספיא"><a href="authority/isifya.html">עספיא</a></td><td data-sort="13060">13,060</td><td data-sort="2023">2023</td></tr>
+<tr><td class="name" data-sort="פוריידיס"><a href="authority/fureidis.html">פוריידיס</a></td><td data-sort="13108">13,108</td><td data-sort="2022">2022</td></tr>
+<tr><td class="name" data-sort="ראשון לציון"><a href="authority/rishon-leziyyon.html">ראשון לציון</a></td><td data-sort="252413">252,413</td><td data-sort="2023">2023</td></tr>
+<tr><td class="name" data-sort="ריינה"><a href="authority/reine.html">ריינה</a></td><td data-sort="17046">17,046</td><td data-sort="2023">2023</td></tr>
+<tr><td class="name" data-sort="שפרעם"><a href="authority/shefar-am.html">שפרעם</a></td><td data-sort="42713">42,713</td><td data-sort="2023">2023</td></tr></tbody>
 </table>
 </div>
 </div>
+<script src="app.js?v=bee479e0"></script>
+<script>document.addEventListener('DOMContentLoaded', () => makeSortableTable(document.getElementById('wos-table')));</script>
 
 </main>
 <footer class="site-footer">
@@ -58,6 +61,6 @@
     <a href="methodology.html">מקורות ומתודולוגיה</a>
   </div>
 </footer>
-<script src="theme.js"></script>
+<script src="theme.js?v=bee479e0"></script>
 </body>
 </html>

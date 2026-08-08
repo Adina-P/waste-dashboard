@@ -25,6 +25,38 @@ function latestReportedYear(authority, years) {
   return null;
 }
 
-Chart.defaults.font.family = "system-ui, -apple-system, 'Segoe UI', sans-serif";
-Chart.defaults.color = getComputedStyle(document.documentElement).getPropertyValue("--text-secondary").trim() || "#52514e";
-Chart.defaults.borderColor = getComputedStyle(document.documentElement).getPropertyValue("--gridline").trim() || "#e1e0d9";
+// Generic click-to-sort for any table.ranked with data-key headers and
+// data-sort attributes on cells (falls back to cell text if data-sort is absent).
+function makeSortableTable(table) {
+  if (!table) return;
+  const headers = table.querySelectorAll("thead th[data-key]");
+  const tbody = table.querySelector("tbody");
+  headers.forEach((th, colIndex) => {
+    th.addEventListener("click", () => {
+      const wasAsc = th.classList.contains("sorted") && th.classList.contains("asc");
+      const asc = !wasAsc;
+      headers.forEach((h) => h.classList.remove("sorted", "asc"));
+      th.classList.add("sorted");
+      if (asc) th.classList.add("asc");
+
+      const rows = Array.from(tbody.querySelectorAll("tr"));
+      rows.sort((a, b) => {
+        const ac = a.children[colIndex];
+        const bc = b.children[colIndex];
+        const av = ac.dataset.sort ?? ac.textContent.trim();
+        const bv = bc.dataset.sort ?? bc.textContent.trim();
+        const an = parseFloat(av);
+        const bn = parseFloat(bv);
+        const cmp = !isNaN(an) && !isNaN(bn) ? an - bn : String(av).localeCompare(String(bv), "he");
+        return asc ? cmp : -cmp;
+      });
+      rows.forEach((r) => tbody.appendChild(r));
+    });
+  });
+}
+
+if (typeof Chart !== "undefined") {
+  Chart.defaults.font.family = "system-ui, -apple-system, 'Segoe UI', sans-serif";
+  Chart.defaults.color = getComputedStyle(document.documentElement).getPropertyValue("--text-secondary").trim() || "#52514e";
+  Chart.defaults.borderColor = getComputedStyle(document.documentElement).getPropertyValue("--gridline").trim() || "#e1e0d9";
+}
