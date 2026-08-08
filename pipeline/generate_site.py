@@ -461,7 +461,7 @@ def build_authority_page(authority: dict, years: list[str]) -> str:
         not_current = '<div class="caveat">לרשות זו אין נתוני מיחזור מדווחים בכל השנים הזמינות (<bdi dir="ltr">2014&ndash;2024</bdi>).</div>'
 
     body = f"""
-<a class="back-link" href="ranking.html">&rarr; חזרה לדירוג</a>
+<a class="back-link" href="../ranking.html">&rarr; חזרה לדירוג</a>
 <h2>{name_he}</h2>
 <p class="lede">{name_en}</p>
 {not_current}
