@@ -22,6 +22,7 @@
           scatterTooltip: (name, pop, pct) => `${name}: ${pop} residents, ${pct}%`,
           populationLog: "Population (logarithmic scale)",
           pctRecycled: "% recycled",
+          tons: "Tons",
         }
       : {
           recycled: "מיחזור והשבה",
@@ -42,6 +43,7 @@
           scatterTooltip: (name, pop, pct) => `${name}: ${pop} תושבים, ${pct}%`,
           populationLog: "אוכלוסייה (סקאלה לוגריתמית)",
           pctRecycled: "% מיחזור",
+          tons: "טונות",
         };
 
   const data = await loadWasteData();
@@ -102,7 +104,12 @@
       plugins: { legend: { position: "bottom", labels: { usePointStyle: true, boxWidth: 8 } } },
       scales: {
         x: { stacked: true, grid: { display: false } },
-        y: { stacked: true, ticks: { callback: (v) => fmtNum(v) }, grid: { color: c("--gridline") } },
+        y: {
+          stacked: true,
+          title: { display: true, text: t.tons, color: c("--text-secondary") },
+          ticks: { callback: (v) => fmtNum(v) },
+          grid: { color: c("--gridline") },
+        },
       },
     },
   });
